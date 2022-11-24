@@ -1,0 +1,92 @@
+{% extends 'adminlayout.html' %}
+
+
+{% block link %}/admin/product/edit/id={{details.id}}{% endblock %}
+
+{% block body %}
+
+     <h1 style="font-size:30px;">Product Details</h1>
+
+  {% with messages = get_flashed_messages() %}
+  {% if messages %}
+    {% for message in messages %}
+  <div class="alert alert-primary" role="alert">
+    <ul class="nav justify-content-center">
+  <li class="nav-item">
+
+      {{ message }}
+  </li>
+    </ul>
+  </div>
+    {% endfor %}
+
+  {% endif %}
+{% endwith %}
+
+  <br>
+  <div class="input-group mb-3">
+  <span class="input-group-text" id="basic-addon1">Product Image</span>
+  <input  type="file" name="img1" class="form-control"  aria-label="Username" aria-describedby="basic-addon1">
+</div>
+  <br>
+  <div class="input-group mb-3">
+  <span class="input-group-text" id="basic-addon1">Product Image</span>
+  <input  type="file" name="img2" class="form-control"  aria-label="Username" aria-describedby="basic-addon1">
+</div>
+  <br>
+  <div class="input-group mb-3">
+  <span class="input-group-text" id="basic-addon1">Product Image</span>
+  <input  type="file" name="img3" class="form-control"  aria-label="Username" aria-describedby="basic-addon1">
+</div>
+
+<div class="input-group mb-3">
+  <span class="input-group-text" id="basic-addon1">Products Name</span>
+  <input required type="text" value="{{details.name}}"  name="name"  class="form-control"  aria-label="Username" aria-describedby="basic-addon1">
+</div>
+
+<div class="input-group mb-3">
+  <span class="input-group-text" id="basic-addon1">Products Author</span>
+  <input required type="text" name="author"  value="{{details.author}}" class="form-control"  aria-label="Username" aria-describedby="basic-addon1">
+</div>
+
+<div class="input-group mb-3">
+  <span class="input-group-text" id="basic-addon1">Products Price</span>
+  <input required type="text" name="price" value="{{details.price}}"  class="form-control"  aria-label="Username" aria-describedby="basic-addon1">
+</div>
+<div class="input-group mb-3">
+  <span class="input-group-text" id="basic-addon1">Offer Price</span>
+  <input  type="text" name="offerPrice" value="{{details.offerPrice}}"  class="form-control"  aria-label="Username" aria-describedby="basic-addon1">
+</div>
+
+<div class="input-group mb-3">
+  <span class="input-group-text" id="basic-addon1">Off Percentage</span>
+  <input  type="text" name="offerParsentage" value="{{details.offerParsentage}}"  class="form-control"  aria-label="Username" aria-describedby="basic-addon1">
+</div>
+
+<div class="input-group mb-3">
+  <span class="input-group-text" id="basic-addon1">Products Rating</span>
+  <input required type="text" name="rating"  value="{{details.rating}}" class="form-control"  aria-label="Username" aria-describedby="basic-addon1">
+</div>
+
+<div class="input-group mb-3">
+  <span class="input-group-text" id="basic-addon1">Delivery Time</span>
+  <input required type="text" name="dvTime" value="{{details.dvTime}}"  class="form-control"  aria-label="Username" aria-describedby="basic-addon1">
+</div>
+
+<div class="input-group mb-3">
+  <span class="input-group-text" id="basic-addon1">Products Certification</span>
+  <input required type="text" name="certificate" value="{{details.certificate}}"  class="form-control"  aria-label="Username" aria-describedby="basic-addon1">
+</div>
+
+<div class="input-group mb-3">
+  <span class="input-group-text" id="basic-addon1">Description</span>
+ <textarea required name="description"  class="form-control" aria-label="With textarea">{{details.description}}</textarea>
+</div>
+
+<div class="input-group mb-3">
+  <span class="input-group-text" id="basic-addon1">Efectiveness</span>
+  <textarea required name="efectiveness" class="form-control" aria-label="With textarea">{{details.efectiveness}}</textarea>
+</div>
+
+
+{% endblock %}

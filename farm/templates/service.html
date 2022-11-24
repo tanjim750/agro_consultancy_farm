@@ -1,0 +1,97 @@
+{% extends "layout.html" %}
+
+{% block services %}active{% endblock %}
+
+{% block body %}
+
+    <!-- Hero Start -->
+    <div style="background:url({{data.img.url}}); background-size: cover;" class="container-fluid bg-primary py-5 bg-hero mb-5">
+        <div class="container py-5">
+            <div class="row justify-content-start">
+                <div class="col-lg-8 text-center text-lg-start">
+                    <h1 class="display-1 text-white mb-md-4">{{data.bd_title}}</h1>
+                    <a href="{{data.button1L}}" class="btn btn-primary py-md-3 px-md-5 me-3">{{data.button1N}}</a>
+                    <a href="{{data.button2L}}" class="btn btn-secondary py-md-3 px-md-5">{{data.button2N}}</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Hero End -->
+
+
+    <!-- Services Start -->
+    <div class="container-fluid py-5">
+        <div class="container">
+            <div class="row g-5">
+                <div class="col-lg-4 col-md-6">
+                    <div class="mb-3">
+                        <h6 class="text-primary text-uppercase">{{data.sr_text}}</h6>
+                        <h1 class="display-5">{{data.sr_title}}</h1>
+                    </div>
+                    <p class="mb-4">{{data.sr_details}}</p>
+                    <a href="data.sr_btnL" class="btn btn-primary py-md-3 px-md-5">{{data.sr_btn}}</a>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="service-item bg-light text-center p-5">
+                        <i class="fa fa-carrot display-1 text-primary mb-3"></i>
+                        <h4>{{data.banner1T}}</h4>
+                        <p class="mb-0">{{data.banner1PD}}</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="service-item bg-light text-center p-5">
+                        <i class="fa fa-apple-alt display-1 text-primary mb-3"></i>
+                        <h4>{{data.banner2T}}</h4>
+                        <p class="mb-0">{{data.banner2PD}}</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="service-item bg-light text-center p-5">
+                        <i class="fa fa-dog display-1 text-primary mb-3"></i>
+                        <h4>{{data.banner3T}}</h4>
+                        <p class="mb-0">{{data.banner3PD}}</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="service-item bg-light text-center p-5">
+                        <i class="fa fa-tractor display-1 text-primary mb-3"></i>
+                        <h4>{{data.banner4T}}</h4>
+                        <p class="mb-0">{{data.banner4PD}}</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="service-item bg-light text-center p-5">
+                        <i class="fa fa-seedling display-1 text-primary mb-3"></i>
+                        <h4>{{data.banner5T}}</h4>
+                        <p class="mb-0">{{data.banner5PD}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Services End -->
+
+
+     <!-- Testimonial Start -->
+    <div style="background:url({{testimonia_image.background_image.url}}); background-size: cover;" class="container-fluid bg-testimonial py-5 my-5">
+        <div class="container py-5">
+            <div class="row justify-content-center">
+                <div class="col-lg-7">
+                    <div class="owl-carousel testimonial-carousel p-5">
+                        {% for t in testimonia_data %}
+                        <div class="testimonial-item text-center text-white">
+                            <img class="img-fluid mx-auto p-2 border border-5 border-secondary rounded-circle mb-4" src="{{t.profile_picture.url}}" alt="">
+                            <p class="fs-5">{{t.description}}</p>
+                            <hr class="mx-auto w-25">
+                            <h4 class="text-white mb-0">{{t.claint_name}}</h4>
+                        </div>
+                        {% endfor %}
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Testimonial End -->
+
+  {% endblock %}

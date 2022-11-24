@@ -1,0 +1,101 @@
+{% extends 'adminlayout.html' %}
+{% block dlt %}
+        <ul class="nav justify-content-end">
+  <li class="nav-item">
+    <p class="nav-link"><a style="background:red;" onclick="chacker()" href="/admin/slogan/delete/id={{value}}" type="button" class="btn btn-primary">Delete Slogan</a>  </p>
+  </li>
+</ul>
+{% endblock %}
+{% block body %}
+
+
+   <ul class="nav justify-content-center">
+<div class="card" style="width: 18rem;">
+  <img src="{{url_for('static', filename=slogan.image)}}" class="card-img-top" alt="...">
+</div>
+   </ul>
+
+<br>
+
+     <h1 style="font-size:30px;">Slogan Body</h1>
+<br>
+
+  {% with messages = get_flashed_messages() %}
+  {% if messages %}
+    {% for message in messages %}
+  <div class="alert alert-primary" role="alert">
+    <ul class="nav justify-content-center">
+  <li class="nav-item">
+
+      {{ message }}
+  </li>
+    </ul>
+  </div>
+    {% endfor %}
+
+  {% endif %}
+{% endwith %}
+
+  <br><br>
+
+<div class="input-group mb-3">
+  <span class="input-group-text" id="basic-addon1">Background Image</span>
+  <input type="file" name="image" value="{{slogan.image}}" class="form-control"  aria-label="Username" aria-describedby="basic-addon1">
+</div>
+
+<div class="input-group mb-3">
+  <span class="input-group-text" id="basic-addon1">Title</span>
+  <input type="text" name="title" value="{{slogan.title}}"  class="form-control"  aria-label="Username" aria-describedby="basic-addon1">
+</div>
+<div class="input-group">
+  <span class="input-group-text">Slogan</span>
+  <textarea name="slogan" class="form-control" aria-label="With textarea"> {{slogan.slogan}}</textarea>
+</div><br>
+
+<div class="input-group mb-3">
+  <span class="input-group-text" id="basic-addon1">Button 1</span>
+  <input type="text" name="b1n" value="{{slogan.button1N}}" class="form-control"  aria-label="Username" aria-describedby="basic-addon1">
+</div>
+<div class="input-group mb-3">
+  <span class="input-group-text" id="basic-addon1">Button 2</span>
+  <input type="text"name="b2n" value="{{slogan.button2N}}" class="form-control"  aria-label="Username" aria-describedby="basic-addon1">
+</div>
+
+    <div class="input-group mb-3">
+  <span class="input-group-text" id="basic-addon1">Button 1 Link</span>
+  <input type="text"name="b1l" value="{{slogan.button1L}}" class="form-control"  aria-label="Username" aria-describedby="basic-addon1">
+</div>
+<div class="input-group mb-3">
+  <span class="input-group-text" id="basic-addon1">Button 2 Link</span>
+  <input type="text" name="b2l" value="{{slogan.button2L}}" class="form-control"  aria-label="Username" aria-describedby="basic-addon1">
+</div>
+
+  </form>
+
+
+<!--  <script>-->
+
+<!--    function chacker() {-->
+<!--    var ask = confirm('Are you sure?/nYou want to delete it!!');-->
+<!--    if (ask == false) {-->
+<!--    event.preventDefault();-->
+<!--    }-->
+<!--      }-->
+
+
+<!--  </script>-->
+
+  <script>
+
+    function chacker() {
+    var ask = prompt('Are you sure? \nYou want to delete it!! \nEnter [Delete].');
+    if (ask != "Delete") {
+    event.preventDefault();
+    }
+      }
+
+
+  </script>
+
+
+{% endblock %}

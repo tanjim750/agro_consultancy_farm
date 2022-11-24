@@ -1,0 +1,32 @@
+{% extends 'adminlayout.html' %}
+
+{% block style %}
+#sbtn{
+display:none;
+}
+{% endblock %}
+
+
+{% block link %}{% endblock %}
+
+{% block body %}
+    <br> <br>
+
+      <h1>Deleted Slogans</h1>
+  <br>
+  <ul class="nav justify-content-center">
+
+  {% for i in main %}
+      <li class="nav-item mx-3">
+        <div class="card" style="width: 15rem;">
+  <img src="{{url_for('static', filename=i.image)}}" class="card-img-top" alt="img">
+  <div class="card-body">
+    <h5 class="card-title">{{i.title}}</h5>
+    <p class="card-text">{{i.slogan}}</p>
+    <a href="/admin/restore/slogan/id={{i.id}}" class="btn btn-primary">Restore Slogan</a>
+  </div>
+</div>
+      </li>
+  {% endfor %}
+  </ul>
+{% endblock %}

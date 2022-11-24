@@ -1,0 +1,72 @@
+{% extends 'adminlayout.html' %}
+
+
+
+{% block csrf %} {% csrf_token %}{% endblock %}
+{% block body %}
+
+     <h1 style="font-size:30px;">Product Details</h1>
+
+<!---->
+
+  <br>
+  <div class="input-group mb-3">
+  <span class="input-group-text" id="basic-addon1">Product Image</span>
+  <input required multiple type="file" name="images" class="form-control"  aria-label="Username" aria-describedby="basic-addon1">
+</div>
+  <br>
+  <div class="input-group mb-3">
+  <span class="input-group-text" id="basic-addon1">Product Thumblain</span>
+  <input required type="file" name="thumbnail" class="form-control"  aria-label="Username" aria-describedby="basic-addon1">
+</div>
+<div class="input-group mb-3">
+  <span class="input-group-text" id="basic-addon1">Products Name</span>
+  <input required type="text" name="name"  class="form-control"  aria-label="Username" aria-describedby="basic-addon1">
+</div>
+
+<div class="input-group mb-3">
+  <span class="input-group-text" id="basic-addon1">Products Author</span>
+  <input required type="text" name="author"  class="form-control"  aria-label="Username" aria-describedby="basic-addon1">
+</div>
+
+<div class="input-group mb-3">
+  <span class="input-group-text" id="basic-addon1">Products Price</span>
+  <input required type="text" name="price"  class="form-control"  aria-label="Username" aria-describedby="basic-addon1">
+</div>
+<div class="input-group mb-3">
+  <span class="input-group-text" id="basic-addon1">Offer Price</span>
+  <input  type="text" name="offerPrice"  class="form-control"  aria-label="Username" aria-describedby="basic-addon1">
+</div>
+
+<div class="input-group mb-3">
+  <span class="input-group-text" id="basic-addon1">Off Percentage</span>
+  <input  type="text" name="offerParsentage"  class="form-control"  aria-label="Username" aria-describedby="basic-addon1">
+</div>
+
+<div class="input-group mb-3">
+  <span class="input-group-text" id="basic-addon1">Products Rating</span>
+  <input required type="text" name="rating"  class="form-control"  aria-label="Username" aria-describedby="basic-addon1">
+</div>
+
+<div class="input-group mb-3">
+  <span class="input-group-text" id="basic-addon1">Delivery Time</span>
+  <input required type="text" name="dvTime"  class="form-control"  aria-label="Username" aria-describedby="basic-addon1">
+</div>
+
+<div class="input-group mb-3">
+  <span class="input-group-text" id="basic-addon1">Products Certification</span>
+  <input required type="text" name="certificate"  class="form-control"  aria-label="Username" aria-describedby="basic-addon1">
+</div>
+
+<div class="input-group mb-3">
+  <span class="input-group-text" id="basic-addon1">Description</span>
+ <textarea required name="description" class="form-control" aria-label="With textarea"></textarea>
+</div>
+
+<div class="input-group mb-3">
+  <span class="input-group-text" id="basic-addon1">Efectiveness</span>
+  <textarea required name="efectiveness" class="form-control" aria-label="With textarea"></textarea>
+</div>
+
+
+{% endblock %}
