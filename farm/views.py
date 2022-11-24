@@ -1,7 +1,8 @@
 from django.shortcuts import render
 from .models import (sloganBody , home ,deletedSlogan , aboutme , services ,
                      contact_page , features , addproducts,
-                     productimages, testimonial, posts )
+                     productimages, testimonial, posts,
+                     messageme)
 import uuid
 # Create your views here.
 
@@ -109,6 +110,7 @@ def contact(request):
                          email=email,
                          subject=subject,
                          message=message)
+
     context = {'footer':footer, 'condt':condt }
     return render(request, 'contact.html', context)
 
