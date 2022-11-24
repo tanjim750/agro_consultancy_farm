@@ -102,13 +102,13 @@ def contact(request):
     condt = contact_page.objects.get(id= 1)
     if request.method == 'POST':
         name = request.form["name"]
-        subject = request.form["subject"]
+        number = request.form["subject"]
         email = request.form["email"]
         message = request.form["message"]
 
         save = messageme(name=name,
                          email=email,
-                         subject=subject,
+                         number=number,
                          message=message)
 
     context = {'footer':footer, 'condt':condt }
