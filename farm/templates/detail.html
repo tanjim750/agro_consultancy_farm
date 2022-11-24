@@ -39,56 +39,29 @@
                 </div>
                 <!-- Blog Detail End -->
 
-                <!-- Comment List Start -->
-                <div class="mb-5">
-                    <h2 class="mb-4">3 Comments</h2>
-                    <div class="d-flex mb-4">
-                        <img src="img/user.jpg" class="img-fluid" style="width: 45px; height: 45px;">
-                        <div class="ps-3">
-                            <h6><a href="">John Doe</a> <small><i>01 Jan 2045</i></small></h6>
-                            <p>Diam amet duo labore stet elitr invidunt ea clita ipsum voluptua, tempor labore
-                                accusam ipsum et no at. Kasd diam tempor rebum magna dolores sed eirmod</p>
-                            <button class="btn btn-sm btn-primary">Reply</button>
-                        </div>
-                    </div>
-                    <div class="d-flex mb-4">
-                        <img src="img/user.jpg" class="img-fluid" style="width: 45px; height: 45px;">
-                        <div class="ps-3">
-                            <h6><a href="">John Doe</a> <small><i>01 Jan 2045</i></small></h6>
-                            <p>Diam amet duo labore stet elitr invidunt ea clita ipsum voluptua, tempor labore
-                                accusam ipsum et no at. Kasd diam tempor rebum magna dolores sed eirmod</p>
-                            <button class="btn btn-sm btn-primary">Reply</button>
-                        </div>
-                    </div>
-                    <div class="d-flex ms-5 mb-4">
-                        <img src="img/user.jpg" class="img-fluid" style="width: 45px; height: 45px;">
-                        <div class="ps-3">
-                            <h6><a href="">John Doe</a> <small><i>01 Jan 2045</i></small></h6>
-                            <p>Diam amet duo labore stet elitr invidunt ea clita ipsum voluptua, tempor labore
-                                accusam ipsum et no at. Kasd diam tempor rebum magna dolores sed eirmod</p>
-                            <button class="btn btn-sm btn-primary">Reply</button>
-                        </div>
-                    </div>
-                </div>
-                <!-- Comment List End -->
-
-                <!-- Comment Form Start -->
+                 <!-- Comment Form Start -->
                 <div class="bg-primary p-5">
                     <h2 class="text-white mb-4">Leave a comment</h2>
-                    <form>
+                    <form action="" method="post">
+                        {% csrf_token %}
                         <div class="row g-3">
+                            {% if 'name' not in request.session and 'number' not in request.session %}
                             <div class="col-12 col-sm-6">
-                                <input type="text" class="form-control bg-white border-0" placeholder="Your Name" style="height: 55px;">
+                                <input type="text" name="name" class="form-control bg-white border-0" placeholder="Your Name" style="height: 55px;">
                             </div>
                             <div class="col-12 col-sm-6">
-                                <input type="email" class="form-control bg-white border-0" placeholder="Your Email" style="height: 55px;">
+                                <input type="number" name="number" class="form-control bg-white border-0" placeholder="Your Number" style="height: 55px;">
                             </div>
+
                             <div class="col-12">
-                                <input type="text" class="form-control bg-white border-0" placeholder="Website" style="height: 55px;">
+                                <textarea name="comment" class="form-control bg-white border-0" rows="5" placeholder="Comment"></textarea>
                             </div>
+                            <span style="color:black;">*Your number won't see anyone</span>
+                            {% else %}
                             <div class="col-12">
-                                <textarea class="form-control bg-white border-0" rows="5" placeholder="Comment"></textarea>
+                                <textarea name="comment" class="form-control bg-white border-0" rows="5" placeholder="Comment"></textarea>
                             </div>
+                            {% endif %}
                             <div class="col-12">
                                 <button class="btn btn-secondary w-100 py-3" type="submit">Leave Your Comment</button>
                             </div>
@@ -96,6 +69,26 @@
                     </form>
                 </div>
                 <!-- Comment Form End -->
+                    <br><br>
+                <!-- Comment List Start -->
+                <div class="mb-5">
+                    <h2 class="mb-4">{{comments.count}} Comment{% if comments.count > 1 %}s{% endif %}</h2>
+                    {% for cmnt in comments %}
+                    <div class="d-flex mb-4">
+                        <img src="{{cmnt.image.url}}" class="img-fluid" style="width: 45px; height: 45px;">
+                        <div class="ps-3">
+                            <h6><a href="">{{cmnt.name}}</a> <br> <span style="font-size:11px; color:gray;">{{cmnt.date}}</span></h6>
+                            <p>{{cmnt.comment}}</p>
+
+                            <button class="btn btn-sm btn-primary">Reply</button>
+                        </div>
+                    </div>
+                    {% endfor %}
+
+                </div>
+                <!-- Comment List End -->
+
+
             </div>
 
             <!-- Sidebar Start -->

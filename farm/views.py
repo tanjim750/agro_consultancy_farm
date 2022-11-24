@@ -2,7 +2,7 @@ from django.shortcuts import render
 from .models import (sloganBody , home ,deletedSlogan , aboutme , services ,
                      contact_page , features , addproducts,
                      productimages, testimonial, posts,
-                     messageme)
+                     messageme, post_comments)
 import uuid
 # Create your views here.
 
@@ -101,16 +101,16 @@ def contact(request):
     footer = home.objects.get(id=1)
     condt = contact_page.objects.get(id= 1)
     if request.method == 'POST':
-        name = request.form["name"]
-        number = request.form["subject"]
-        email = request.form["email"]
-        message = request.form["message"]
+        name = request.POST["name"]
+        number = request.POST["number"]
+        email = request.POST["email"]
+        message = request.POST["message"]
 
-        save = messageme(name=name,
+        msg = messageme(name=name,
                          email=email,
                          number=number,
                          message=message)
-
+        msg.save()
     context = {'footer':footer, 'condt':condt }
     return render(request, 'contact.html', context)
 
@@ -119,8 +119,9 @@ def blogposts(request):
     footer = home.objects.get(id=1)
     condt = contact_page.objects.get(id= 1)
     post = posts.objects.all()
-    img = posts.objects.get(id=1)
-    context = {'footer':footer, 'condt':condt, 'post':post, 'img':img}
+    # img = posts.objects.get(id=1)
+
+    context = {'footer':footer, 'condt':condt, 'post':post, }
 
     return render(request, 'blog.html', context)
 
@@ -128,12 +129,33 @@ def viewblogposts(request,id,value):
     footer = home.objects.get(id=1)
     condt = contact_page.objects.get(id= 1)
     post = posts.objects.get(postId= id)
+    comments = post.post_comments_set.all()
 
-    context = {'footer':footer, 'condt':condt, 'post':post }
+    if request.method == 'POST':
+        if 'name' in request.session and 'number' in request.session:
+            name = request.session['name']
+            number = request.session['number']
+        else:
+            name = request.POST['name']
+            number = request.POST['number']
+            request.session['name'] = name
+            request.session['number'] = number
+        comment = request.POST['comment']
+
+        post_comments.objects.create(postId = post,
+                                     commentId= uuid.uuid4(),
+                                    name = name,
+                                    number = number,
+                                    comment = comment)
+
+    context = {'footer':footer, 'condt':condt, 'post':post , 'comments':comments }
 
     return render(request, 'detail.html', context)
 
+def comment_replay(request):
 
+
+    return render(request, 'replay.html')
 
 
 
