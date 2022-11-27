@@ -2,7 +2,8 @@ from django.contrib import admin
 from .models import (sloganBody , home ,deletedSlogan , aboutme , services ,
                      contactme , features , addproducts,
                      productimages, contact_page, testimonial,
-                     posts, messageme, post_comments)
+                     posts, messageme, post_comments,
+                     comments_reply)
 
 # Register your models here.
 
@@ -85,6 +86,11 @@ class admin_post_comment(admin.ModelAdmin):
         'name', 'number', 'comment' , 'date'
     ]
 
+@admin.register(comments_reply)
+class admin_comments_reply(admin.ModelAdmin):
+    list_display = [
+        'replyId','name', 'number', 'reply' , 'date'
+    ]
 
 
 

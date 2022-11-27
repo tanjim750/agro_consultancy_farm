@@ -2,6 +2,90 @@
 
 {% block pages %}active{% endblock %}
 
+{% block script %}
+
+<script   src="https://code.jquery.com/jquery-3.1.1.min.js"   integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="   crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+  $(document).on('submit','#post-comment',function(e){
+    e.preventDefault();
+
+    $.ajax({
+      type:'POST',
+      url:'/blog-post/{{post.postId}}/{{post.title}}',
+       data:{
+          comment:$('#comment').val(),
+          name:$('#name').val(),
+          number:$('#number').val(),
+        csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+      },
+      success: function(data){
+         //alert(data)
+      }
+    });
+
+    document.getElementById('comment').value = ''
+    document.getElementById('name').value = ''
+    document.getElementById('number').value = ''
+
+  });
+</script>
+
+
+
+{% endblock %}
+
+{% block style %}
+
+.sclbox{
+height:450px;
+overflow:hidden;
+overflow-y:scroll;
+}
+
+
+.cmntbox{
+border-radius: 25px;
+height:40px;
+background:#9a9c9b;
+margin:5px 5px auto;
+}
+
+
+.cmntbox input{
+width:50%;
+border:none;
+outline:none;
+color:#fff;
+background:transparent;
+margin:5px 10px auto;
+}
+::placeholder{
+color:#fff;
+}
+
+.cmntbox img {
+height:42px;
+widht:42px;
+border-radius:50%;
+margin:-1px -1px 0 0 ;
+
+}
+
+.cmntbox .cmntbtn {
+
+padding:7.5px 15px 9px 15px;
+border-radius:25px;
+float:right;
+border:none;
+outline:none;
+background:#6c42f5;
+color:#fff;
+}
+
+
+{% endblock %}
+
 {% block body %}
 
 
@@ -39,57 +123,204 @@
                 </div>
                 <!-- Blog Detail End -->
 
-                 <!-- Comment Form Start -->
-                <div class="bg-primary p-5">
-                    <h2 class="text-white mb-4">Leave a comment</h2>
-                    <form action="" method="post">
-                        {% csrf_token %}
-                        <div class="row g-3">
-                            {% if 'name' not in request.session and 'number' not in request.session %}
-                            <div class="col-12 col-sm-6">
-                                <input type="text" name="name" class="form-control bg-white border-0" placeholder="Your Name" style="height: 55px;">
-                            </div>
-                            <div class="col-12 col-sm-6">
-                                <input type="number" name="number" class="form-control bg-white border-0" placeholder="Your Number" style="height: 55px;">
-                            </div>
 
-                            <div class="col-12">
-                                <textarea name="comment" class="form-control bg-white border-0" rows="5" placeholder="Comment"></textarea>
-                            </div>
-                            <span style="color:black;">*Your number won't see anyone</span>
-                            {% else %}
-                            <div class="col-12">
-                                <textarea name="comment" class="form-control bg-white border-0" rows="5" placeholder="Comment"></textarea>
-                            </div>
-                            {% endif %}
-                            <div class="col-12">
-                                <button class="btn btn-secondary w-100 py-3" type="submit">Leave Your Comment</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <!-- Comment Form End -->
-                    <br><br>
                 <!-- Comment List Start -->
-                <div class="mb-5">
-                    <h2 class="mb-4">{{comments.count}} Comment{% if comments.count > 1 %}s{% endif %}</h2>
+
+                <div  class="mb-5" id="allcmntbox">
+                    <div id="cmtdisplay"></div>
+                        <h2 class="mb-4">{{number_of_comments}} Comment{% if number_of_comments > 1 %}s{% endif %}</h2>
+                     <div data-bs-spy="scroll" data-bs-target="#navbar-example2" data-bs-root-margin="0px 0px -40%"
+                          data-bs-smooth-scroll="true" class="sclbox scrollspy-example bg-light p-3 rounded-2" tabindex="0">
+
                     {% for cmnt in comments %}
-                    <div class="d-flex mb-4">
+
+
+                         <p><div class="d-flex mb-4">
                         <img src="{{cmnt.image.url}}" class="img-fluid" style="width: 45px; height: 45px;">
                         <div class="ps-3">
                             <h6><a href="">{{cmnt.name}}</a> <br> <span style="font-size:11px; color:gray;">{{cmnt.date}}</span></h6>
                             <p>{{cmnt.comment}}</p>
 
-                            <button class="btn btn-sm btn-primary">Reply</button>
+                            <p>
+
+                                <button class="btn btn-sm btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#cmntreply{{cmnt.commentId}}" aria-expanded="false" aria-controls="collapseExample">
+                                        Reply
+                                </button>
+                            </p>
+                                <div class="collapse" id="cmntreply{{cmnt.commentId}}">
+
+                                    <form action="/blog-post/{{post.postId}}/{{post.title}}#allcmntbox" id="post-commen" method="post">
+                                        {% csrf_token %}
+                                   <div class="cmntbox ">
+                                        <img src="/img/deafult.png">
+                                            <input type="text" name="reply" id="comment" class="cmnt" placeholder="Comment" >
+                                            <input type="hidden" value="rtc" name="type">
+                                            <input type="hidden" value="{{cmnt.commentId}}" name="parent">
+                                             <button type="submit" class="cmntbtn">Reply</button>
+
+                                   </div>
+                                    </form>
+                                </div>
+
+                            {% if cmnt.comments_reply_set.all.count > 0 %}
+
+                            <p>
+
+                                <span data-bs-toggle="collapse" data-bs-target="#readreplys{{cmnt.commentId}}" aria-expanded="false" aria-controls="collapseExample">
+                                    read {{cmnt.comments_reply_set.all.count}} more reply
+                                     </span>
+                            </p>
+                                    {% for reply in cmnt.comments_reply_set.all %}
+
+                                <div class="collapse" id="readreplys{{cmnt.commentId}}">
+
+
+                                    {% if reply.childrens == None %}
+                                    <!--                    reply of a comment -->
+
+                                    <p><div class="d-flex mb-4">
+
+                                    <img src="{{reply.image.url}}" class="img-fluid" style="width: 45px; height: 45px;">
+                                        <div class="ps-3">
+                                            <h6><a href="">{{reply.name}}</a> <br> <span style="font-size:11px; color:gray;">{{reply.date}}</span></h6>
+                                                <p>{{reply.reply}}</p>
+
+<!--                                    button-->
+
+                            <p>
+
+                                <button class="btn btn-sm btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#reply{{reply.replyId}}" aria-expanded="false" aria-controls="collapseExample">
+                                        Reply
+                                </button>
+                            </p>
+                                <div class="collapse" id="reply{{reply.replyId}}">
+                                    <form action="/blog-post/{{post.postId}}/{{post.title}}#allcmntbox" id="post-commen" method="post">
+                                        {% csrf_token %}
+                                   <div class="cmntbox ">
+                                        <img src="/img/deafult.png">
+                                            <input type="text" name="replyto" id="comment" class="cmnt" placeholder="Comment" >
+                                            <input type="hidden" value="rtr" name="type">
+                                            <input type="hidden" value="{{cmnt.commentId}}" name="parent">
+                                            <input type="hidden" value="{{reply.replyId}}" name="childrens">
+                                             <button type="submit" class="cmntbtn">Reply</button>
+
+                                   </div>
+                                    </form>
+                                </div>
+
+                            <!--                            reply of a reply-->
+
+                                            {% for replyofreply in cmnt.comments_reply_set.all %}
+                                            {% if replyofreply.childrens != None and reply.replyId == replyofreply.childrens %}
+
+
+                            <p><div class="d-flex mb-4">
+                        <img src="{{replyofreply.image.url}}" class="img-fluid" style="width: 45px; height: 45px;">
+                        <div class="ps-3">
+                            <h6><a href="">{{replyofreply.name}}</a> <br> <span style="font-size:11px; color:gray;">{{replyofreply.date}}</span></h6>
+                            <p>{{replyofreply.reply}}</p>
+
+<!--                            button-->
+
+                            <p>
+
+                                <button class="btn btn-sm btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#reply{{replyofreply.replyId}}" aria-expanded="false" aria-controls="collapseExample">
+                                        Reply
+                                </button>
+                            </p>
+                                <div class="collapse" id="reply{{replyofreply.replyId}}">
+                                    <form action="/blog-post/{{post.postId}}/{{post.title}}#allcmntbox" id="post-commen" method="post">
+                                        {% csrf_token %}
+                                   <div class="cmntbox ">
+                                        <img src="/img/deafult.png">
+                                            <input type="text" name="replyto" id="comment" class="cmnt" placeholder="Comment" >
+                                            <input type="hidden" value="rtr" name="type">
+                                            <input type="hidden" value="{{cmnt.commentId}}" name="parent">
+                                            <input type="hidden" value="{{reply.replyId}}" name="childrens">
+                                             <button type="submit" class="cmntbtn">Reply</button>
+
+                                   </div>
+                                    </form>
+                                </div>
+
+
                         </div>
-                    </div>
+
+                    </div> </p>
+
+                                            {% endif %}
+                                            {% endfor %}
+
+                <!--                            reply of a reply-->
+
+                        </div>
+
+
+                    </div> </p>
+                                    {% endif %}
+
+                                </div>
+
+                            {% endfor %}
+                            {% endif %}
+
+                        </div>
+
+                    </div> </p>
+
+
+
+
                     {% endfor %}
 
-                </div>
+                    </div>
                 <!-- Comment List End -->
+                     <!-- Comment Form Start -->
+                    <form action="/blog-post/{{post.postId}}/{{post.title}}#allcmntbox" id="post-commen" method="post">
+                        {% csrf_token %}
+                        {% if 'name' in request.session and 'number' in request.session %}
 
+                            <div class="cmntbox">
+                                    <img src="/img/deafult.png">
+                                <input type="text" name="comment" id="comment" class="cmnt" placeholder="Comment" >
+                                <button type="submit" class="cmntbtn">Send</button>
+
+                            </div>
+                <!-- Comment Form End -->
+                        {% else %}
+
+                        <div class="bg-primary p-5">
+                        <h2 class="text-white mb-3">Leave a comment</h2>
+
+                        <div class="row g-3">
+
+                            <div class="col-12 col-sm-6">
+                                <input type="text" name="name" id="name" class="form-control bg-white border-0" placeholder="Your Name" style="height: 55px;">
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <input type="number" name="number" id="number" class="form-control bg-white border-0" placeholder="Your Number" style="height: 55px;">
+                            </div>
+
+                            <div class="col-12">
+                                <textarea name="comment" id="comment" class="form-control bg-white border-0" rows="5" placeholder="Comment"></textarea>
+                            </div>
+                            <span style="color:black;">*Your number won't see anyone</span>
+
+                            <div class="col-12">
+                                <button class="btn btn-secondary w-100 py-3" type="submit">Leave Your Comment</button>
+                            </div>
+                        </div>
+
+                        </div>
+                            {% endif %}
+
+                    </form>
+                    <br><br>
+                </div>
 
             </div>
+
+
 
             <!-- Sidebar Start -->
             <div class="col-lg-4">

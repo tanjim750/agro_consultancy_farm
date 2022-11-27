@@ -227,6 +227,20 @@ class post_comments(models.Model):
 		return f"{self.name} "
 
 
+class comments_reply(models.Model):
+	replyId = models.AutoField(primary_key=True)
+	parent = models.ForeignKey(post_comments, on_delete=models.CASCADE)
+	postId = models.ForeignKey(posts, on_delete=models.CASCADE)
+	childrens = models.IntegerField(null=True, blank=True)
+	name = models.CharField(max_length=100)
+	image = models.ImageField(upload_to='img', default='img/deafult.png')
+	number = models.CharField(max_length=100)
+	reply = models.TextField()
+	date = models.DateTimeField(auto_now_add=True)
+
+	def __repr__(self) -> str:
+		return f"{self.name} "
+
 class messageme(models.Model):
 	id = models.AutoField(primary_key=True)
 	name = models.CharField(max_length=100)

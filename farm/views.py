@@ -1,8 +1,9 @@
 from django.shortcuts import render
+from django.http import JsonResponse
 from .models import (sloganBody , home ,deletedSlogan , aboutme , services ,
                      contact_page , features , addproducts,
                      productimages, testimonial, posts,
-                     messageme, post_comments)
+                     messageme, post_comments, comments_reply)
 import uuid
 # Create your views here.
 
@@ -130,29 +131,62 @@ def viewblogposts(request,id,value):
     condt = contact_page.objects.get(id= 1)
     post = posts.objects.get(postId= id)
     comments = post.post_comments_set.all()
-
+    number_of_comments = comments.count() + post.comments_reply_set.all().count()
     if request.method == 'POST':
-        if 'name' in request.session and 'number' in request.session:
-            name = request.session['name']
-            number = request.session['number']
+        if request.POST.get('type') == 'rtc':
+            if 'name' in request.session and 'number' in request.session:
+                name = request.session['name']
+                number = request.session['number']
+                reply = request.POST['reply']
+                get_parent = request.POST['parent']
+                parent = post_comments.objects.get(commentId = get_parent)
+                comments_reply.objects.create(parent = parent,
+                                              reply = reply,
+                                              postId = post,
+                                              name = name,
+                                              number = number,
+                                              )
+        elif request.POST.get('type') == 'rtr':
+            if 'name' in request.session and 'number' in request.session:
+                name = request.session['name']
+                number = request.session['number']
+                reply = request.POST['replyto']
+                get_parent = request.POST['parent']
+                get_childrens = request.POST['childrens']
+                parent = post_comments.objects.get(commentId = get_parent)
+                # childrens = comments_reply.objects.get(replyId = get_childrens)
+                comments_reply.objects.create(parent = parent,
+                                              reply = reply,
+                                              childrens = get_childrens,
+                                              postId = post,
+                                              name = name,
+                                              number = number,
+                                              )
         else:
             name = request.POST['name']
             number = request.POST['number']
             request.session['name'] = name
             request.session['number'] = number
-        comment = request.POST['comment']
+            comment = request.POST['comment']
 
-        post_comments.objects.create(postId = post,
+            post_comments.objects.create(postId = post,
                                      commentId= uuid.uuid4(),
                                     name = name,
                                     number = number,
                                     comment = comment)
 
-    context = {'footer':footer, 'condt':condt, 'post':post , 'comments':comments }
+    context = {'footer':footer, 'condt':condt, 'post':post , 'comments':comments, 'number_of_comments':number_of_comments }
 
     return render(request, 'detail.html', context)
 
-def comment_replay(request):
+def displayComments(request, id):
+    post = posts.objects.get(postId=id)
+    comments = post.post_comments_set.all()
+
+    return JsonResponse({'comments':list(comments.values())})
+
+
+def comment_replay(request, ):
 
 
     return render(request, 'replay.html')

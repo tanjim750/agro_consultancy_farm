@@ -13,5 +13,6 @@ urlpatterns = [
     path('blog-posts' , views.blogposts),
     path('product/details/<id>/<value>' , views.viewproduct),
     path('blog-post/<id>/<value>' , views.viewblogposts),
+    path('comments/<id>' , views.displayComments),
     path('comment-replay' , views.comment_replay),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
