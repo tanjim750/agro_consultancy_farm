@@ -226,6 +226,9 @@ class post_comments(models.Model):
 	def __repr__(self) -> str:
 		return f"{self.name} "
 
+	class Meta:
+		ordering = ['-date']
+
 
 class comments_reply(models.Model):
 	replyId = models.AutoField(primary_key=True)
@@ -252,7 +255,14 @@ class messageme(models.Model):
 	def __repr__(self) -> str:
 		return f"{self.name} {self.message}"
 
+class chat(models.Model):
+	message = models.TextField()
+	user = models.CharField(max_length=1000000, default='user')
+	room = models.CharField(max_length=1000000, default='room')
+	sent_date = models.DateTimeField(auto_now_add=True)
 
+	def __repr__(self) -> str:
+		return f"{self.message}"
 
 
 

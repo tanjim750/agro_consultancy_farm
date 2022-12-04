@@ -47,6 +47,7 @@ overflow-y:scroll;
 .cmntbox{
 border-radius: 25px;
 height:40px;
+width:100%;
 background:#9a9c9b;
 margin:5px 5px auto;
 }
@@ -82,6 +83,22 @@ outline:none;
 background:#6c42f5;
 color:#fff;
 }
+
+
+#popupdisply{
+position:fixed;
+padding: 20px 20px 20px 20px;
+background:#6c42f5;
+top:50%;
+left:35%;
+transform:translate(-50%,-50%)
+}
+
+#popupdisply ::placeholder {
+color:gray;
+
+}
+
 
 
 {% endblock %}
@@ -127,12 +144,14 @@ color:#fff;
                 <!-- Comment List Start -->
 
                 <div  class="mb-5" id="allcmntbox">
-                    <div id="cmtdisplay"></div>
+
+
                         <h2 class="mb-4">{{number_of_comments}} Comment{% if number_of_comments > 1 %}s{% endif %}</h2>
+
                      <div data-bs-spy="scroll" data-bs-target="#navbar-example2" data-bs-root-margin="0px 0px -40%"
                           data-bs-smooth-scroll="true" class="sclbox scrollspy-example bg-light p-3 rounded-2" tabindex="0">
 
-                    {% for cmnt in comments %}
+                        {% for cmnt in comments %}
 
 
                          <p><div class="d-flex mb-4">
@@ -140,6 +159,8 @@ color:#fff;
                         <div class="ps-3">
                             <h6><a href="">{{cmnt.name}}</a> <br> <span style="font-size:11px; color:gray;">{{cmnt.date}}</span></h6>
                             <p>{{cmnt.comment}}</p>
+
+                                {% if 'name' in request.session and 'number' in request.session %}
 
                             <p>
 
@@ -153,7 +174,7 @@ color:#fff;
                                         {% csrf_token %}
                                    <div class="cmntbox ">
                                         <img src="/img/deafult.png">
-                                            <input type="text" name="reply" id="comment" class="cmnt" placeholder="Comment" >
+                                            <input type="text" name="reply" id="comment" class="cmnt" placeholder="Reply To {{cmnt.name}}" >
                                             <input type="hidden" value="rtc" name="type">
                                             <input type="hidden" value="{{cmnt.commentId}}" name="parent">
                                              <button type="submit" class="cmntbtn">Reply</button>
@@ -161,6 +182,45 @@ color:#fff;
                                    </div>
                                     </form>
                                 </div>
+
+                            {% else %}
+                                <button class="btn btn-sm btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#cmntreply{{cmnt.commentId}}" aria-controls="offcanvasExample">
+                                    reply
+                                </button>
+
+                                <div class="offcanvas offcanvas-start" tabindex="-1" id="cmntreply{{cmnt.commentId}}" aria-labelledby="offcanvasExampleLabel">
+                                        <div class="offcanvas-header">
+                                            <h5 class="offcanvas-title" id="offcanvasExampleLabel">Reply To {{cmnt.name}}</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                        </div>
+                                     <div class="offcanvas-body">
+                                         <form action="/blog-post/{{post.postId}}/{{post.title}}#allcmntbox" id="post-commen" method="post">
+                                        {% csrf_token %}
+
+                                        <div class="col-12 col-sm-6 mb-2">
+                                            <input type="hidden" value="rtc" name="type">
+                                            <input type="hidden" value="{{cmnt.commentId}}" name="parent">
+                                            <input type="text" name="name" id="name" class="form-control bg-white border-1" placeholder="Your Name" style="height: 35px;">
+                                        </div>
+                                        <div class="col-12 col-sm-6 mb-2">
+                                            <input type="number" name="number" id="number" class="form-control bg-white border-1" placeholder="Your Number" style="height: 35px;">
+                                        </div>
+
+                                        <div class="col-12 mb-2">
+                                            <textarea name="reply" id="comment" class="form-control bg-white border-1" rows="3" placeholder="Reply"></textarea>
+                                        </div>
+                                        <span style="color:black;">*Your number won't see anyone</span>
+
+                                        <div class="col-12">
+                                            <button class="btn btn-secondary w-100 py-3" type="submit">Reply</button>
+                                        </div>
+                                         </form>
+
+                                    </div>
+                                </div>
+
+                            {% endif %}
+
 
                             {% if cmnt.comments_reply_set.all.count > 0 %}
 
@@ -187,6 +247,7 @@ color:#fff;
 
 <!--                                    button-->
 
+                                    {% if 'name' in request.session and 'number' in request.session %}
                             <p>
 
                                 <button class="btn btn-sm btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#reply{{reply.replyId}}" aria-expanded="false" aria-controls="collapseExample">
@@ -198,7 +259,7 @@ color:#fff;
                                         {% csrf_token %}
                                    <div class="cmntbox ">
                                         <img src="/img/deafult.png">
-                                            <input type="text" name="replyto" id="comment" class="cmnt" placeholder="Comment" >
+                                            <input type="text" name="replyto" id="comment" class="cmnt" placeholder="Reply To {{reply.name}}" >
                                             <input type="hidden" value="rtr" name="type">
                                             <input type="hidden" value="{{cmnt.commentId}}" name="parent">
                                             <input type="hidden" value="{{reply.replyId}}" name="childrens">
@@ -207,6 +268,44 @@ color:#fff;
                                    </div>
                                     </form>
                                 </div>
+                                            {% else %}
+                                <button class="btn btn-sm btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#reply{{reply.replyId}}" aria-controls="offcanvasExample">
+                                    reply
+                                </button>
+
+                                <div class="offcanvas offcanvas-start" tabindex="-1" id="reply{{reply.replyId}}" aria-labelledby="offcanvasExampleLabel">
+                                        <div class="offcanvas-header">
+                                            <h5 class="offcanvas-title" id="offcanvasExampleLabel">Reply To {{reply.name}}</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                        </div>
+                                     <div class="offcanvas-body">
+                                          <form action="/blog-post/{{post.postId}}/{{post.title}}#allcmntbox" id="post-commen" method="post">
+                                                {% csrf_token %}
+
+                                        <div class="col-12 col-sm-6 mb-2">
+                                            <input type="hidden" value="rtr" name="type">
+                                            <input type="hidden" value="{{cmnt.commentId}}" name="parent">
+                                            <input type="hidden" value="{{reply.replyId}}" name="childrens">
+                                            <input type="text" name="name" id="name" class="form-control bg-white border-1" placeholder="Your Name" style="height: 35px;">
+                                        </div>
+                                        <div class="col-12 col-sm-6 mb-2">
+                                            <input type="number" name="number" id="number" class="form-control bg-white border-1" placeholder="Your Number" style="height: 35px;">
+                                        </div>
+
+                                        <div class="col-12 mb-2">
+                                            <textarea name="replyto" id="comment" class="form-control bg-white border-1" rows="3" placeholder="Reply"></textarea>
+                                        </div>
+                                        <span style="color:black;">*Your number won't see anyone</span>
+
+                                        <div class="col-12">
+                                            <button class="btn btn-secondary w-100 py-3" type="submit">Reply</button>
+                                        </div>
+
+                                          </form>
+
+                                    </div>
+                                </div>
+                                            {% endif %}
 
                             <!--                            reply of a reply-->
 
@@ -221,6 +320,7 @@ color:#fff;
                             <p>{{replyofreply.reply}}</p>
 
 <!--                            button-->
+                            {% if 'name' in request.session and 'number' in request.session %}
 
                             <p>
 
@@ -231,17 +331,55 @@ color:#fff;
                                 <div class="collapse" id="reply{{replyofreply.replyId}}">
                                     <form action="/blog-post/{{post.postId}}/{{post.title}}#allcmntbox" id="post-commen" method="post">
                                         {% csrf_token %}
-                                   <div class="cmntbox ">
-                                        <img src="/img/deafult.png">
-                                            <input type="text" name="replyto" id="comment" class="cmnt" placeholder="Comment" >
+                                        <div class="cmntbox ">
+                                            <img src="/img/deafult.png">
+                                            <input type="text" name="replyto" id="comment" class="cmnt" placeholder="Reply To {{replyofreply.name}}" >
                                             <input type="hidden" value="rtr" name="type">
                                             <input type="hidden" value="{{cmnt.commentId}}" name="parent">
                                             <input type="hidden" value="{{reply.replyId}}" name="childrens">
                                              <button type="submit" class="cmntbtn">Reply</button>
 
-                                   </div>
+                                        </div>
                                     </form>
                                 </div>
+                            {% else %}
+
+                                <button class="btn btn-sm btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#reply{{replyofreply.replyId}}" aria-controls="offcanvasExample">
+                                    reply
+                                </button>
+
+                                <div class="offcanvas offcanvas-start" tabindex="-1" id="reply{{replyofreply.replyId}}" aria-labelledby="offcanvasExampleLabel">
+                                        <div class="offcanvas-header">
+                                            <h5 class="offcanvas-title" id="offcanvasExampleLabel">Reply To {{replyofreply.name}}</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                        </div>
+                                     <div class="offcanvas-body">
+                                         <form action="/blog-post/{{post.postId}}/{{post.title}}#allcmntbox" id="post-commen" method="post">
+                                            {% csrf_token %}
+                                        <div class="col-12 col-sm-6 mb-2">
+                                            <input type="hidden" value="rtr" name="type">
+                                            <input type="hidden" value="{{cmnt.commentId}}" name="parent">
+                                            <input type="hidden" value="{{reply.replyId}}" name="childrens">
+                                            <input type="text" name="name" id="name" class="form-control bg-white border-1" placeholder="Your Name" style="height: 35px;">
+                                        </div>
+                                        <div class="col-12 col-sm-6 mb-2">
+                                            <input type="number" name="number" id="number" class="form-control bg-white border-1" placeholder="Your Number" style="height: 35px;">
+                                        </div>
+
+                                        <div class="col-12 mb-2">
+                                            <textarea name="replyto" id="comment" class="form-control bg-white border-1" rows="3" placeholder="Reply"></textarea>
+                                        </div>
+                                        <span style="color:black;">*Your number won't see anyone</span>
+
+                                        <div class="col-12">
+                                            <button class="btn btn-secondary w-100 py-3" type="submit">Reply</button>
+                                        </div>
+                                         </form>
+
+                                    </div>
+                                </div>
+
+                            {% endif %}
 
 
                         </div>
@@ -282,6 +420,7 @@ color:#fff;
 
                             <div class="cmntbox">
                                     <img src="/img/deafult.png">
+                                <input type="hidden" value="cmnt" name="type">
                                 <input type="text" name="comment" id="comment" class="cmnt" placeholder="Comment" >
                                 <button type="submit" class="cmntbtn">Send</button>
 
@@ -289,12 +428,13 @@ color:#fff;
                 <!-- Comment Form End -->
                         {% else %}
 
-                        <div class="bg-primary p-5">
+                        <div class="bg-primary p-5 m-3">
                         <h2 class="text-white mb-3">Leave a comment</h2>
 
                         <div class="row g-3">
 
                             <div class="col-12 col-sm-6">
+                                <input type="hidden" value="cmnt" name="type">
                                 <input type="text" name="name" id="name" class="form-control bg-white border-0" placeholder="Your Name" style="height: 55px;">
                             </div>
                             <div class="col-12 col-sm-6">

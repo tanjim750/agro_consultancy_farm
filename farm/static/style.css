@@ -282,6 +282,8 @@
     justify-content: flex-end;
     background: linear-gradient(rgba(52, 173, 84, 0), rgba(52, 173, 84, 1));
     z-index: 1;
+
+
 }
 
 .bg-footer {
@@ -294,3 +296,5 @@
         margin-top: 90px !important;
     }
 }
+
+

@@ -7,9 +7,10 @@
     <title>product full detail - Bootdey.com</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 	<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
-    <link href="https://netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
 	<script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+
     <style>
 
         .rating{
@@ -140,205 +141,171 @@ form .btn button:hover{
 }
 
     </style>
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+  <script>
+
+      var paymentID = '';
+bKash.init({
+  paymentMode: 'checkout', //fixed value ‘checkout’
+  //paymentRequest format: {amount: AMOUNT, intent: INTENT}
+  //intent options
+  //1) ‘sale’ – immediate transaction (2 API calls)
+  //2) ‘authorization’ – deferred transaction (3 API calls)
+  paymentRequest: {
+    amount: '100.50', //max two decimal points allowed
+    intent: 'sale'
+  },
+  createRequest: function(request) { //request object is basically the paymentRequest object, automatically pushed by the script in createRequest method
+    $.ajax({
+      url: 'MERCHANT_BACKEND_CREATE_API_CALLER_URL',
+      type: 'POST',
+      contentType: 'application/json',
+      success: function(data) {
+        data = JSON.parse(data);
+        if (data && data.paymentID != null) {
+          paymentID = data.paymentID;
+          bKash.create().onSuccess(data); //pass the whole response data in bKash.create().onSucess() method as a parameter
+        } else {
+          bKash.create().onError();
+        }
+      },
+      error: function() {
+        bKash.create().onError();
+      }
+    });
+  },
+  executeRequestOnAuthorization: function() {
+    $.ajax({
+      url: 'MERCHANT_BACKEND_EXECUTE_API_CALLER_URL',
+      type: 'POST',
+      contentType: 'application/json',
+      data: JSON.stringify({
+        "paymentID": paymentID
+      }),
+      success: function(data) {
+        data = JSON.parse(data);
+        if (data && data.paymentID != null) {
+          window.location.href = "success.html";//Merchant’s success page
+        } else {
+          bKash.execute().onError();
+        }
+      },
+      error: function() {
+        bKash.execute().onError();
+      }
+    });
+  }
+});
+
+  </script>
 
 </head>
 <body>
 
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" />
 
-
+<form method="post">{% csrf_token %}
 <div class="container">
     <!-- product -->
     <div class="product-content product-wrap clearfix product-deatil">
         <div class="row">
-            <div class="col-md-5 col-sm-12 col-xs-12">
-                <div class="product-image">
-                    <div id="myCarousel-2" class="carousel slide">
-                        <ol class="carousel-indicators">
-                            <li data-target="#myCarousel-2" data-slide-to="0" class=""></li>
-                            <li data-target="#myCarousel-2" data-slide-to="1" class="active"></li>
-                            <li data-target="#myCarousel-2" data-slide-to="2" class=""></li>
-                        </ol>
-                        <div class="carousel-inner">
-                            <!-- Slide 1 -->
-                            <!-- Slide 1 -->
-                            <div class="item active">
-                                <img src="{{details.thumbnail.url}}" class="img-responsive" alt="" />
-                            </div>
-                            <!-- Slide 2 -->
-                            {% for i in img %}
-                            <div class="item">
-                                <img src="{{i.image.url}}" class="img-responsive" alt="" />
-                            </div>
-                            {% endfor %}
 
-                            <!-- Slide  -->
-
-                        </div>
-                        <a class="left carousel-control" href="#myCarousel-2" data-slide="prev"> <span class="glyphicon glyphicon-chevron-left"></span> </a>
-                        <a class="right carousel-control" href="#myCarousel-2" data-slide="next"> <span class="glyphicon glyphicon-chevron-right"></span> </a>
-                    </div>
-                </div>
-            </div>
 
             <div class="col-md-6 col-md-offset-1 col-sm-12 col-xs-12">
-                <h2 class="name">
-                    {{details.name}}
-                    <small>Product by <a href="javascript:void(0);">{{details.author}}</a></small>
-                    <div>
-                    <span class="fa fa-star" style="font-size:10px;"></span><h1 style="position:absolute; font-size:25px; top:43px; margin-left:15px;">4.5</h1>
-                    </div>
-                    <a href="javascript:void(0);" style="font-size:17px;">109 customer reviews</a>
-                </h2>
-                <hr />
-                <h3 class="price-container">
-                    {% if details.offerPrice %}
-                    <strike>{{details.price}}</strike>
-                    {{details.offerPrice}}
-                    {% else %}
+                <div class="card" style="width: 100%;">
+                    <div class="card-body">
+                        <img src="{{details.thumbnail.url}}" height="50px" width="50px">
+                        <span><strong>{{details.name}}</strong></span>
 
-                    {{details.price}}
-                    {% endif  %}
-                    <small>*includes tax</small>
-                </h3>
-                <div class="certified">
-                    <ul>
-                        <li>
-                            <a href="javascript:void(0);">Delivery time<span>{{details.dvTime}} Working Days</span></a>
-                        </li>
-                        <li>
-                            <a href="javascript:void(0);">Certified<span>{{details.certificate}}</span></a>
-                        </li>
-                    </ul>
+                        <br><br><p>Discount and Payments</p>
 
-<!--                    <strong>Quantity:</strong> <input type="number" value="1" style="width:40px; padding-left:5px; margin-bottom:20px;">-->
-                </div>
-                <div class="row">
-                    <div class="col-sm-12 col-md-6 col-lg-6">
-                        <a href="/shopping/product={{details.productId}}" class="btn btn-success btn-lg">Buy Now</a>
-                    </div>
-                    <div class="col-sm-12 col-md-6 col-lg-6">
-                        <div class="btn-group pull-right">
-                            <button class="btn btn-white btn-default"><i class="fa fa-star"></i> Add to wishlist</button>
-                            <button class="btn btn-white btn-default"><i class="fa fa-envelope"></i> Contact Seller</button>
-                        </div>
+
+                        <span>Discount<span style="float:right;">{{details.offerParsentage}}</span></span><br>
+                        <span>Voucher<span style="float:right;">No Applicable Voucher </span></span><br>
+
+                        <hr>
+
+                        <p>Order Summary <span style="float:right;"><span style="font-size:23px;">৳ </span>{{details.price}}</span></p>
+                        <p>Total Items  <span style="float:right;">1</span></p>
+                        <p>Delivery Fee <span style="float:right;"><span style="font-size:23px;">৳ </span>50</span></p>
+                        <p>Total Payment <span style="float:right;"><span style="font-size:23px;">৳ </span>300</span></p>
                     </div>
                 </div>
-                <hr />
-                <div class="description description-tabs">
-                    <ul id="myTab" class="nav nav-pills">
-                        <li class="active"><a href="#more-information" data-toggle="tab" class="no-margin">Product Description </a></li>
-                        <li class=""><a href="#specifications" data-toggle="tab">Effectiveness</a></li>
-                        <li class=""><a href="#reviews" data-toggle="tab">Reviews</a></li>
-                    </ul>
-                    <div id="myTabContent" class="tab-content">
-                        <div class="tab-pane fade active in" id="more-information">
-                            <br />
-                            <strong>{{details.name}}</strong>
-                            <p>
-                                <br>
+                <ul class="nav justify-content-end m-2 mb-5">
 
-                                {{details.description}}
+                            <button type="submit" class="btn btn-success" id="bKash_button">Place Order</button>
 
-
-
-
-                            </p>
-                        </div>
-                        <div class="tab-pane fade" id="specifications">
-                            <br />
-                            <dl class="">
-
-                                {{details.efectiveness}}
-
-                            </dl>
-                        </div>
-                        <div class="tab-pane fade" id="reviews">
-                            <br />
-                                <div class="rating">
-                                    <div class="post">
-        <div class="text">Thanks for rating us!</div>
-        <div class="edit">EDIT</div>
-      </div>
-      <div class="star-widget">
-       <form action="/product/details/{{details.id}}/{{details.name}}" method="post">
-        <input value="5" type="radio" name="rate" id="rate-5">
-        <label for="rate-5" class="fas fa-star"></label>
-        <input value="4" type="radio" name="rate" id="rate-4">
-        <label for="rate-4" class="fas fa-star"></label>
-        <input value="3" type="radio" name="rate" id="rate-3">
-        <label for="rate-3" class="fas fa-star"></label>
-        <input value="2" type="radio" name="rate" id="rate-2">
-        <label for="rate-2" class="fas fa-star"></label>
-        <input value="1" type="radio" name="rate" id="rate-1" required>
-        <label for="rate-1" class="fas fa-star" ></label>
-          <header></header>
-          <div class="textarea">
-            <textarea name="comment" cols="30" placeholder="Describe your experience.."></textarea>
-          </div>
-          <div class="btn">
-            <button type="submit">Post</button>
-          </div>
-        </form>
-      </div>
-    </div>
-    <script>
-
-    </script>
-
-
-                            <div class="chat-body no-padding profile-message">
-                                <ul>
-
-                                    <li class="message">
-                                        <img src="https://bootdey.com/img/Content/avatar/avatar1.png" class="online" />
-                                        <span class="message-text">
-                                            <a href="javascript:void(0);" class="username">
-                                                Alisha Molly
-                                                <span class="badge">Purchase Verified</span>
-                                                <span class="pull-right">
-
-
-                                                    <i class="fa fa-star fa-2x text-primary"></i>
-<!--                                                    <i class="fa fa-star fa-2x text-primary"></i>-->
-<!--                                                    <i class="fa fa-star fa-2x text-primary"></i>-->
-<!--                                                    <i class="fa fa-star fa-2x text-primary"></i>-->
-<!--                                                    <i class="fa fa-star fa-2x text-muted"></i>-->
-
-                                                </span>
-                                            </a><br>
-
-
-
-
-
-
-                                            </span>
-
-                                        <ul class="list-inline font-xs">
-                                            <li>
-                                                <a href="javascript:void(0);" class="text-info"><i class="fa fa-thumbs-up"></i> This was helpful (22)</a>
-                                            </li>
-                                            <li class="pull-right">
-                                                <small class="text-muted pull-right ultra-light"></small>
-                                            </li>
-                                        </ul>
-                                    </li>
-
-
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <hr />
-
+                </ul>
             </div>
-        </div>
-    </div>
-    <!-- end product -->
+
+
+            <div class="col-md-5 col-sm-12 col-xs-12">
+                <div class="product-image">
+
+
+
+                        <div class="carousel-inner">
+                            <div class="mb-2">
+                                <label for="exampleFormControlInput1" class="form-label">Full Name</label>
+                                <input type="text" required  class="form-control" id="exampleFormControlInput1" placeholder="Input Full Name">
+                            </div>
+
+                            <div class="mb-2">
+                                <label for="exampleFormControlInput1" class="form-label">Number</label>
+                                <input type="number" required class="form-control" id="exampleFormControlInput1" placeholder="Input Number">
+                            </div>
+
+                            <div class="mb-2">
+                                <label for="exampleFormControlInput1" class="form-label">Email address</label>
+                                <input type="email" required class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
+                            </div>
+
+                            <label for="exampleFormControlInput1" class="form-label">Divison</label>
+                            <select class="form-select mb-3" required aria-label="Default select example">
+
+                                <option selected>Select Your division</option>
+                                <option value="1">One</option>
+                                <option value="2">Two</option>
+                                <option value="3">Three</option>
+                            </select>
+
+                            <label for="exampleFormControlInput1"  class="form-label">City</label>
+                            <select class="form-select mb-3" required aria-label="Default select example">
+                                <option selected>Select Your City</option>
+                                <option value="1">One</option>
+                                <option value="2">Two</option>
+                                <option value="3">Three</option>
+                            </select>
+
+                            <label for="exampleFormControlInput1" class="form-label">Area</label>
+                            <select class="form-select mb-3" required aria-label="Default select example">
+                                <option selected>Select Your Area</option>
+                                <option value="1">One</option>
+                                <option value="2">Two</option>
+                                <option value="3">Three</option>
+                            </select>
+
+                            <div class="mb-2">
+                                <label for="exampleFormControlInput1" class="form-label">Address</label>
+                                <input type="text" class="form-control" required id="exampleFormControlInput1" placeholder="Input Address">
+                            </div>
+
+
+
+                        </div>
+
+                        <ul class="nav justify-content-end m-2">
+
+                            <button type="submit" class="btn btn-primary">Save Address</button>
+
+                        </ul>
+
+                </div>
+            </div>
 </div>
 
+</div>
+</form>
 
 
 
