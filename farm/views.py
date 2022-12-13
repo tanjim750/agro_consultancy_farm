@@ -441,7 +441,7 @@ def showUserMessages(request, user):
 @login_required()
 def profile_info(request):
     header = home.objects.get(id=1)
-    print('done')
+    #print('done')
     info = profile.objects.get(user=request.user)
     if request.method == 'POST':
         if request.POST['type'] == 'info':
