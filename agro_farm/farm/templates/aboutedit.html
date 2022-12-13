@@ -1,0 +1,105 @@
+{% extends 'adminlayout.html' %}
+
+
+{% block link %}/admin/about{% endblock %}
+
+{% block body %}
+
+
+<br>
+     <h1 style="font-size:30px;">Main Body Container</h1>
+
+  {% with messages = get_flashed_messages() %}
+  {% if messages %}
+    {% for message in messages %}
+  <div class="alert alert-primary" role="alert">
+    <ul class="nav justify-content-center">
+  <li class="nav-item">
+
+      {{ message }}
+  </li>
+    </ul>
+  </div>
+    {% endfor %}
+
+  {% endif %}
+{% endwith %}
+
+  <br>
+  <div class="input-group mb-3">
+  <span class="input-group-text" id="basic-addon1">Background Image</span>
+  <input type="file" name="bd_img" class="form-control"  aria-label="Username" aria-describedby="basic-addon1">
+</div>
+
+<div class="input-group mb-3">
+  <span class="input-group-text" id="basic-addon1">Body Title</span>
+  <input type="text" name="bd_title" value="{{aboutdt.bd_title}}" class="form-control"  aria-label="Username" aria-describedby="basic-addon1">
+</div>
+
+
+<div class="input-group mb-3">
+  <span class="input-group-text" id="basic-addon1">Button 1</span>
+  <input type="text" name="button1N" value="{{aboutdt.button1N}}" class="form-control"  aria-label="Username" aria-describedby="basic-addon1">
+</div>
+<div class="input-group mb-3">
+  <span class="input-group-text" id="basic-addon1">Button 2</span>
+  <input type="text"name="button2N" value="{{aboutdt.button2N}}" class="form-control"  aria-label="Username" aria-describedby="basic-addon1">
+</div>
+
+    <div class="input-group mb-3">
+  <span class="input-group-text" id="basic-addon1">Button 1 Link</span>
+  <input type="text" name="button1L" value="{{aboutdt.button1L}}" class="form-control"  aria-label="Username" aria-describedby="basic-addon1">
+</div>
+<div class="input-group mb-3">
+  <span class="input-group-text" id="basic-addon1">Button 2 Link</span>
+  <input type="text" name="button2L" value="{{aboutdt.button2L}}" class="form-control"  aria-label="Username" aria-describedby="basic-addon1">
+</div>
+  <br>
+
+
+<h1 style="font-size:30px;">About You</h1>
+
+
+  <div class="input-group mb-3">
+  <span class="input-group-text" id="basic-addon1">Background Image</span>
+  <input type="file" name="AU_img" class="form-control" value="{{aboutdt.Au_img}}" aria-label="Username" aria-describedby="basic-addon1">
+</div>
+
+  <div class="input-group mb-3">
+  <span class="input-group-text" id="basic-addon1">About Text</span>
+  <input type="text" name="Au_text" class="form-control"  aria-label="Username" value="{{aboutdt.Au_text}}" aria-describedby="basic-addon1">
+</div>
+
+    <div class="input-group mb-3">
+  <span class="input-group-text" id="basic-addon1">About Title</span>
+  <input type="text" name="aU_title" class="form-control" value="{{aboutdt.aU_title}}"  aria-label="Username" aria-describedby="basic-addon1">
+</div>
+
+  <div class="input-group">
+  <span class="input-group-text">Details</span>
+  <textarea name="aU_details" class="form-control" aria-label="With textarea">{{aboutdt.aU_details}}</textarea>
+</div><br>
+
+  <h1 style="font-size:30px;">About First Banner</h1>
+    <div class="input-group mb-3">
+  <span class="input-group-text" id="basic-addon1">Banner Title</span>
+  <input type="text" name="banner1T" class="form-control"  aria-label="Username" value="{{aboutdt.banner1T}}" aria-describedby="basic-addon1">
+</div>
+
+  <div class="input-group">
+  <span class="input-group-text">Details</span>
+  <textarea name="banner1PD" class="form-control" aria-label="With textarea">{{aboutdt.banner1PD}}</textarea>
+</div><br>
+
+    <h1 style="font-size:30px;">About second Banner</h1>
+    <div class="input-group mb-3">
+  <span class="input-group-text" id="basic-addon1">Banner Title</span>
+  <input type="text" name="banner2T" class="form-control"  aria-label="Username" value="{{aboutdt.banner2T}}" aria-describedby="basic-addon1">
+</div>
+
+  <div class="input-group">
+  <span class="input-group-text">Details</span>
+  <textarea name="banner2PD" class="form-control" aria-label="With textarea">{{aboutdt.banner2PD}}</textarea>
+</div><br>
+  </form>
+{% endblock %}

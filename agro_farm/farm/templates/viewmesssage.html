@@ -1,0 +1,29 @@
+{% extends 'adminlayout.html' %}
+
+{% block style %}
+#sbtn{
+display:none;
+}
+{% endblock %}
+
+{% block body %}
+
+<div class="alert alert-success" role="alert">
+  <h4 class="alert-heading">{{msg.name}}</h4>
+  <p> Email: {{msg.email}} <br> Number: {{msg.subject}}</p>
+  <hr>
+  <p class="mb-0">Message:<br>{{msg.message}}</p>
+</div>
+
+    {% for i in same %}
+    {% if msg.email in i.email %}
+    <div class="alert alert-success" role="alert">
+  <h4 class="alert-heading">{{i.name}}</h4>
+  <p> Email: {{i.email}} <br> Number: {{i.subject}}</p>
+  <hr>
+  <p class="mb-0">Message:<br>{{i.message}}</p>
+</div>
+    {% endif %}
+    {% endfor %}
+
+{% endblock %}

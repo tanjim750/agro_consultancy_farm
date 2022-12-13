@@ -1,0 +1,60 @@
+{% extends 'adminlayout.html' %}
+
+
+{% block body %}
+
+<br>
+     <h1 style="font-size:30px;">Post a Slogan</h1>
+
+  {% with messages = get_flashed_messages() %}
+  {% if messages %}
+    {% for message in messages %}
+  <div class="alert alert-primary" role="alert">
+    <ul class="nav justify-content-center">
+  <li class="nav-item">
+
+      {{ message }}
+  </li>
+    </ul>
+  </div>
+    {% endfor %}
+
+  {% endif %}
+{% endwith %}
+
+  <br>
+<div class="input-group mb-3">
+  <span class="input-group-text" id="basic-addon1">Background Image</span>
+  <input type="file" name="image" class="form-control"  aria-label="Username" aria-describedby="basic-addon1">
+</div>
+
+<div class="input-group mb-3">
+  <span class="input-group-text" id="basic-addon1">Title</span>
+  <input type="text" name="title" class="form-control"  aria-label="Username" aria-describedby="basic-addon1">
+</div>
+<div class="input-group">
+  <span class="input-group-text">Slogan</span>
+  <textarea name="slogan" class="form-control" aria-label="With textarea"></textarea>
+</div><br>
+
+<div class="input-group mb-3">
+  <span class="input-group-text" id="basic-addon1">Button 1</span>
+  <input type="text" name="b1n" class="form-control"  aria-label="Username" aria-describedby="basic-addon1">
+</div>
+<div class="input-group mb-3">
+  <span class="input-group-text" id="basic-addon1">Button 2</span>
+  <input type="text"name="b2n" class="form-control"  aria-label="Username" aria-describedby="basic-addon1">
+</div>
+
+    <div class="input-group mb-3">
+  <span class="input-group-text" id="basic-addon1">Button 1 Link</span>
+  <input type="text"name="b1l" class="form-control"  aria-label="Username" aria-describedby="basic-addon1">
+</div>
+<div class="input-group mb-3">
+  <span class="input-group-text" id="basic-addon1">Button 2 Link</span>
+  <input type="text" name="b2l" class="form-control"  aria-label="Username" aria-describedby="basic-addon1">
+</div>
+
+  </form>
+
+{% endblock %}

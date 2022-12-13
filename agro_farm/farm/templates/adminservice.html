@@ -1,0 +1,151 @@
+{% extends 'adminlayout.html' %}
+
+{% block link %}/admin/service{% endblock %}
+
+{% block body %}
+
+<br>
+     <h1 style="font-size:30px;">Main Body Container</h1>
+
+  {% with messages = get_flashed_messages() %}
+  {% if messages %}
+    {% for message in messages %}
+  <div class="alert alert-primary" role="alert">
+    <ul class="nav justify-content-center">
+  <li class="nav-item">
+
+      {{ message }}
+  </li>
+    </ul>
+  </div>
+    {% endfor %}
+
+  {% endif %}
+{% endwith %}
+
+  <br>
+  <div class="input-group mb-3">
+  <span class="input-group-text" id="basic-addon1">Background Image</span>
+  <input type="file" name="img" class="form-control"  aria-label="Username" aria-describedby="basic-addon1">
+</div>
+
+<div class="input-group mb-3">
+  <span class="input-group-text" id="basic-addon1">Body Title</span>
+  <input type="text" name="bd_title" value="{{data.bd_title}}" class="form-control"  aria-label="Username" aria-describedby="basic-addon1">
+</div>
+
+
+<div class="input-group mb-3">
+  <span class="input-group-text" id="basic-addon1">Button 1</span>
+  <input type="text" name="button1N" value="{{data.button1N}}" class="form-control"  aria-label="Username" aria-describedby="basic-addon1">
+</div>
+<div class="input-group mb-3">
+  <span class="input-group-text" id="basic-addon1">Button 2</span>
+  <input type="text"name="button2N" value="{{data.button2N}}" class="form-control"  aria-label="Username" aria-describedby="basic-addon1">
+</div>
+
+    <div class="input-group mb-3">
+  <span class="input-group-text" id="basic-addon1">Button 1 Link</span>
+  <input type="text" name="button1L" value="{{data.button1L}}" class="form-control"  aria-label="Username" aria-describedby="basic-addon1">
+</div>
+<div class="input-group mb-3">
+  <span class="input-group-text" id="basic-addon1">Button 2 Link</span>
+  <input type="text" name="button2L" value="{{data.button2L}}" class="form-control"  aria-label="Username" aria-describedby="basic-addon1">
+</div>
+  <br>
+
+  <h1 style="font-size:30px;">service Banner</h1>
+
+      <div class="input-group mb-3">
+  <span class="input-group-text" id="basic-addon1">Top text</span>
+  <input type="text" name="sr_text" class="form-control"  aria-label="Username" value="{{data.sr_text}}" aria-describedby="basic-addon1">
+</div>
+
+    <div class="input-group mb-3">
+  <span class="input-group-text" id="basic-addon1">Banner Title</span>
+  <input type="text" name="sr_title" class="form-control"  aria-label="Username" value="{{data.sr_title}}" aria-describedby="basic-addon1">
+</div>
+
+  <div class="input-group">
+  <span class="input-group-text">Details</span>
+  <textarea name="sr_details" class="form-control" aria-label="With textarea">{{data.sr_details}}</textarea>
+</div><br>
+
+    <div class="input-group mb-3">
+  <span class="input-group-text" id="basic-addon1">Button</span>
+  <input type="text"name="sr_btn" value="{{data.sr_btn}}" class="form-control"  aria-label="Username" aria-describedby="basic-addon1">
+</div>
+
+    <div class="input-group mb-3">
+  <span class="input-group-text" id="basic-addon1">Button Link</span>
+  <input type="text" name="sr_btnL" value="{{data.sr_btnL}}" class="form-control"  aria-label="Username" aria-describedby="basic-addon1">
+</div>
+
+  <br><br>
+
+      <h1 style="font-size:30px;">1st Banner</h1>
+    <div class="input-group mb-3">
+  <span class="input-group-text" id="basic-addon1">Banner Title</span>
+  <input type="text" name="banner1T" class="form-control"  aria-label="Username" value="{{data.banner1T}}" aria-describedby="basic-addon1">
+</div>
+
+  <div class="input-group">
+  <span class="input-group-text">Details</span>
+  <textarea name="banner1PD" class="form-control" aria-label="With textarea">{{data.banner1PD}}</textarea>
+</div>
+ <br><br>
+
+    <h1 style="font-size:30px;">2nd Banner</h1>
+    <div class="input-group mb-3">
+  <span class="input-group-text" id="basic-addon1">Banner Title</span>
+  <input type="text" name="banner2T" class="form-control"  aria-label="Username" value="{{data.banner2T}}" aria-describedby="basic-addon1">
+</div>
+
+  <div class="input-group">
+  <span class="input-group-text">Details</span>
+  <textarea name="banner2PD" class="form-control" aria-label="With textarea">{{data.banner2PD}}</textarea>
+</div>
+
+ <br><br>
+    <h1 style="font-size:30px;">3rd Banner</h1>
+    <div class="input-group mb-3">
+  <span class="input-group-text" id="basic-addon1">Banner Title</span>
+  <input type="text" name="banner3T" class="form-control"  aria-label="Username" value="{{data.banner3T}}" aria-describedby="basic-addon1">
+</div>
+
+  <div class="input-group">
+  <span class="input-group-text">Details</span>
+  <textarea name="banner3PD" class="form-control" aria-label="With textarea">value="{{data.banner3PD}}</textarea>
+</div>
+ <br><br>
+    <h1 style="font-size:30px;">4th Banner</h1>
+    <div class="input-group mb-3">
+  <span class="input-group-text" id="basic-addon1">Banner Title</span>
+  <input type="text" name="banner4T" class="form-control"  aria-label="Username" value="{{data.banner4T}}" aria-describedby="basic-addon1">
+</div>
+
+  <div class="input-group">
+  <span class="input-group-text">Details</span>
+  <textarea name="banner4PD" class="form-control" aria-label="With textarea">value="{{data.banner4PD}}</textarea>
+</div>
+ <br><br>
+
+    <h1 style="font-size:30px;">5th Banner</h1>
+    <div class="input-group mb-3">
+  <span class="input-group-text" id="basic-addon1">Banner Title</span>
+  <input type="text" name="banner5T" class="form-control"  aria-label="Username" value="{{data.banner5T}}" aria-describedby="basic-addon1">
+</div>
+
+  <div class="input-group">
+  <span class="input-group-text">Details</span>
+  <textarea name="banner5PD" class="form-control" aria-label="With textarea">value="{{data.banner5PD}}</textarea>
+</div>
+
+
+
+
+
+
+    </form>
+
+ {% endblock %}

@@ -1,0 +1,87 @@
+{% extends 'adminlayout.html' %}
+
+{% block link %}/admin{% endblock %}
+
+{% block body %}
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    {% for message in messages %}
+  <div class="alert alert-primary" role="alert">
+    <ul class="nav justify-content-center">
+  <li class="nav-item">
+
+      {{ message }}
+  </li>
+    </ul>
+  </div>
+    {% endfor %}
+
+  {% endif %}
+{% endwith %}
+
+    <br>
+    <h1>Edit Header</h1>
+      <div class="mb-3 row">
+  </div>
+<div class="input-group mb-3">
+  <span class="input-group-text" id="basic-addon1">Contact Number</span>
+  <input type="text" name="contact" class="form-control" value="{{footer.contact}}"  aria-label="Username" aria-describedby="basic-addon1">
+</div>
+    <div class="input-group mb-3">
+  <span class="input-group-text" id="basic-addon1">Brand Name</span>
+  <input type="text" name="brandName" value="{{footer.brandName}}" class="form-control"  aria-label="Username" aria-describedby="basic-addon1">
+</div>
+
+    <br>
+
+
+    <h1 style="font-size:30px;">Header Links</h1>
+
+<div class="input-group mb-3">
+  <span class="input-group-text" id="basic-addon1">Twitter</span>
+  <input type="text" name="twitter" class="form-control" value="{{footer.twitter}}"  aria-label="Username" aria-describedby="basic-addon1">
+</div>
+<div class="input-group mb-3">
+  <span class="input-group-text" id="basic-addon1">Facebook</span>
+  <input type="text" name="facebook" class="form-control" value="{{footer.facebook}}"  aria-label="Username" aria-describedby="basic-addon1">
+</div>
+
+<div class="input-group mb-3">
+  <span class="input-group-text" id="basic-addon1">Linkedin</span>
+  <input type="text" name="linkedin" value="{{footer.linkedin}}" class="form-control"  aria-label="Username" aria-describedby="basic-addon1">
+</div>
+
+<div class="input-group mb-3">
+  <span class="input-group-text" id="basic-addon1">Instagram</span>
+  <input type="text" name="instagram" value="{{footer.instagram}}" class="form-control"  aria-label="Username" aria-describedby="basic-addon1">
+</div>
+
+
+
+
+     <h1 style="font-size:30px;">Banner 1</h1>
+
+    <div class="input-group mb-3">
+  <span class="input-group-text" id="basic-addon1">Title</span>
+  <input type="text" name="banner1T" value="{{footer.banner1T}}" class="form-control"  aria-label="Username" aria-describedby="basic-addon1">
+</div>
+
+<div class="input-group">
+  <span class="input-group-text">Post details</span>
+  <textarea name="banner1PD" class="form-control" aria-label="With textarea">{{footer.banner1PD}}</textarea>
+</div>
+
+
+     <h1 style="font-size:30px;">Banner 2</h1>
+   <div class="input-group mb-3">
+  <span class="input-group-text" id="basic-addon1">Title</span>
+  <input type="text" name="banner2T" value="{{footer.banner2T}}" class="form-control"  aria-label="Username" aria-describedby="basic-addon1">
+</div>
+<div class="input-group">
+  <span class="input-group-text">Post details</span>
+  <textarea name="banner2PD" class="form-control" aria-label="With textarea">{{footer.banner2PD}}</textarea>
+</div>
+
+</form>
+
+{% endblock %}

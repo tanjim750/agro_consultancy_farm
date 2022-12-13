@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Messages for admin</title>
+    <link rel="stylesheet" href="{% static 'message_style.css' %}">
+</head>
+<body>
+    <div class="container">
+        <div class="leftSide">
+            <!-- Header -->
+            <div class="header">
+                <div class="userimg">
+                    <img src="/img/deafult.png" alt="" class="cover">
+                </div>
+                <ul class="nav_icons">
+                    <li><ion-icon name="scan-circle-outline"></ion-icon></li>
+                    <li><ion-icon name="chatbox"></ion-icon></li>
+                    <li><ion-icon name="ellipsis-vertical"></ion-icon></li>
+                </ul>
+            </div>
+            <!-- Search Chat -->
+            <div class="search_chat">
+                <div>
+                    <input type="text" placeholder="Search or start new chat">
+                    <ion-icon name="search-outline"></ion-icon>
+                </div>
+            </div>
+            <!-- CHAT LIST -->
+
+
+            <div class="chatlist">
+<!--                <div class="block active">-->
+<!--                    <div class="imgBox">-->
+<!--                        <img src="/img/deafult.png" class="cover" alt="">-->
+<!--                    </div>-->
+<!--                    <div class="details">-->
+<!--                        <div class="listHead">-->
+<!--                            <h4>Jhon Doe</h4>-->
+<!--                            <p class="time">10:56</p>-->
+<!--                        </div>-->
+<!--                        <div class="message_p">-->
+<!--                            <p>How are you doing?</p>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+
+<!--                <div class="block unread">-->
+<!--                    <div class="imgBox">-->
+<!--                        <img src="/img/deafult.png" class="cover" alt="">-->
+<!--                    </div>-->
+<!--                    <div class="details">-->
+<!--                        <div class="listHead">-->
+<!--                            <h4>Andre</h4>-->
+<!--                            <p class="time">12:34</p>-->
+<!--                        </div>-->
+<!--                        <div class="message_p">-->
+<!--                            <p>I love your youtube videos!</p>-->
+<!--                            <b>1</b>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+
+<!--                <div class="block unread">-->
+<!--                    <div class="imgBox">-->
+<!--                        <img src="/img/deafult.png" class="cover" alt="">-->
+<!--                    </div>-->
+<!--                    <div class="details">-->
+<!--                        <div class="listHead">-->
+<!--                            <h4>Olivia</h4>-->
+<!--                            <p class="time">Yesterday</p>-->
+<!--                        </div>-->
+<!--                        <div class="message_p">-->
+<!--                            <p>I just subscribed to your channel</p>-->
+<!--                            <b>2</b>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                <div class="block">-->
+<!--                    <div class="imgBox">-->
+<!--                        <img src="/img/deafult.png" class="cover" alt="">-->
+<!--                    </div>-->
+<!--                    <div class="details">-->
+<!--                        <div class="listHead">-->
+<!--                            <h4>Parker</h4>-->
+<!--                            <p class="time">Yesterday</p>-->
+<!--                        </div>-->
+<!--                        <div class="message_p">-->
+<!--                            <p>Hey!</p>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+
+                {% for user, data in users.items %}
+                <a href="/messages/{{data.profile}}" style="text-decoration:none;">
+                    {% if data.profile == anyUser %}
+                    <div class="block active">
+                        {% else %}
+                    <div class="block">
+                    {% endif %}
+                    <div class="imgBox">
+                        <img src="/img/deafult.png" class="cover" alt="">
+                    </div>
+                    <div class="details">
+                        <div class="listHead">
+                            <h4>{{data.profile}}</h4>
+                            <p class="time">{{data.date}}</p>
+
+                        </div>
+                        <div class="message_p">
+
+                            {% if data.unseen > 0 %}
+                            <p><strong style="color:#000;">{{data.message}}</strong></p>
+                            <p class="unseen" style="height:20px; width:20px; text-align:center; background:#42f548;
+                                border-radius:50%; "><b>{{data.unseen}}</b></p>
+                            {% else %}
+                            <p>{{data.message}}</p>
+                            {% endif %}
+                        </div>
+
+
+                    </div>
+                </div></a>
+                {% endfor %}
+
+            </div>
+        </div>
+        <div class="rightSide">
+            <div class="header">
+                <div class="imgText">
+                    <div class="userimg">
+                        <img src="/img/deafult.png" alt="" class="cover">
+                    </div>
+                    <h4>{{anyUser}} <br><span>online</span></h4>
+                </div>
+                <ul class="nav_icons">
+                    <li><ion-icon name="search-outline"></ion-icon></li>
+                    <li><ion-icon name="ellipsis-vertical"></ion-icon></li>
+                </ul>
+            </div>
+
+            <!-- CHAT-BOX -->
+            <div class="chatbox" id="display">
+<!--                <div class="message my_msg">-->
+<!--                    <p>Hi <br><span>12:18</span></p>-->
+<!--                </div>-->
+<!--                <div class="message friend_msg">-->
+<!--                    <p>Hey <br><span>12:18</span></p>-->
+<!--                </div>-->
+
+            </div>
+
+            <!-- CHAT INPUT -->
+            <form action="/messages/{{anyUser}}" method="post">{% csrf_token %}
+            <div class="chat_input">
+
+                <ion-icon name="happy-outline"></ion-icon>
+                <!-- <ion-icon name="happy-outline"></ion-icon> -->
+                <input type="hidden" name="type" id="type" value="0">
+                <input type="text" name="message" placeholder="Type a message" id="chat-message">
+                <button type="submit"><img src="/img/send.png" height="30px" width="40px"></button>
+            </div>
+                </form>
+        </div>
+    </div>
+
+
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+    {% if anyUser is not None %}
+        <script type="text/javascript">
+          $(document).on('submit','#post-form',function(e){
+            e.preventDefault();
+
+            $.ajax({
+              type:'POST',
+              url:'/get-message/{{anyUser}}/',
+              data:{
+                  message:$('#chat-message').val(),
+                  type:$('#type').val(),
+                csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+              },
+              success: function(data){
+                 //alert(data)
+              }
+            });
+            document.getElementById('chat-message').value = ''
+          });
+        </script>
+        <script   src="https://code.jquery.com/jquery-3.1.1.min.js"   integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="   crossorigin="anonymous"></script>
+
+
+        <script>
+        $(document).ready(function(){
+
+        setInterval(function(){
+            $.ajax({
+                type: 'GET',
+                url : "/get-message/{{anyUser}}/",
+                success: function(response){
+                        //
+                    $("#display").empty();
+                    for (var key in response.messages)
+                    {
+                        if (response.messages[key].type == 0) {
+                            var temp="<div class='message my_msg'><p>"+response.messages[key].message+"</p></div>";
+                        }
+                        else {
+
+                            var temp="<div class='message friend_msg'><p>"+response.messages[key].message+"<br></p></div>";
+
+                        }
+                        $("#display").append(temp);
+                        var objDiv = document.getElementById('display');
+                        objDiv.scrollTop = objDiv.scrollHeight
+
+                    }
+                },
+
+            });
+        },500);
+        })
+
+        </script>
+
+
+    {% endif %}
+
+</body>
+</html>

@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <!--  This file has been downloaded from bootdey.com @bootdey on twitter -->
+    <!--  All snippets are MIT license http://bootdey.com/license -->
+    <title>product full detail - Bootdey.com</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+	<script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+
+    <style>
+
+        .rating{
+  position: relative;
+  width: 500px;
+  background: #111;
+  padding: 10px 10px;
+  border: 1px solid #444;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin-bottom:20px;
+}
+.rating .post{
+  display: none;
+}
+.rating .text{
+  font-size: 16px;
+  color: #666;
+  font-weight: 500;
+}
+.rating .edit{
+  position: absolute;
+  right: 10px;
+  top: 5px;
+  font-size: 16px;
+  color: #666;
+  font-weight: 500;
+  cursor: pointer;
+}
+.rating .edit:hover{
+  text-decoration: underline;
+}
+.rating .star-widget input{
+  display: none;
+}
+.star-widget label{
+  font-size: 17px;
+  color: #444;
+  padding: 5px;
+  margin-bottom:7px;
+
+  float: right;
+  transition: all 0.2s ease;
+}
+input:not(:checked) ~ label:hover,
+input:not(:checked) ~ label:hover ~ label{
+  color: #fd4;
+}
+input:checked ~ label{
+  color: #fd4;
+}
+input#rate-5:checked ~ label{
+  color: #fe7;
+  text-shadow: 0 0 20px #952;
+}
+#rate-1:checked ~ form header:before{
+  content: "";
+}
+#rate-2:checked ~ form header:before{
+  content: "";
+}
+#rate-3:checked ~ form header:before{
+  content: "";
+}
+#rate-4:checked ~ form header:before{
+  content: "";
+}
+#rate-5:checked ~ form header:before{
+  content: "";
+}
+.rating form{
+  display: block;
+}
+input:checked ~ form{
+  display: block;
+}
+form header{
+  width: 100%;
+  font-size: 25px;
+  color: #fe7;
+  font-weight: 500;
+  margin: 5px 0 20px 0;
+  text-align: center;
+  transition: all 0.2s ease;
+}
+form .textarea{
+  height: 100px;
+  width: 100%;
+  overflow: hidden;
+}
+form .textarea textarea{
+  height: 100%;
+  width: 100%;
+  outline: none;
+  color: #eee;
+  border: 1px solid #333;
+  background: #222;
+  padding: 10px;
+  font-size: 17px;
+  resize: none;
+}
+.textarea textarea:focus{
+  border-color: #444;
+}
+form .btn{
+  height: 45px;
+  width: 100%;
+  margin: 15px 0;
+}
+form .btn button{
+  height: 100%;
+  width: 100%;
+  border: 1px solid #444;
+  outline: none;
+  background: #222;
+  color: #999;
+  font-size: 17px;
+  font-weight: 500;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+form .btn button:hover{
+  background: #1b1b1b;
+}
+
+    </style>
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+  <script>
+
+      var paymentID = '';
+bKash.init({
+  paymentMode: 'checkout', //fixed value ‘checkout’
+  //paymentRequest format: {amount: AMOUNT, intent: INTENT}
+  //intent options
+  //1) ‘sale’ – immediate transaction (2 API calls)
+  //2) ‘authorization’ – deferred transaction (3 API calls)
+  paymentRequest: {
+    amount: '100.50', //max two decimal points allowed
+    intent: 'sale'
+  },
+  createRequest: function(request) { //request object is basically the paymentRequest object, automatically pushed by the script in createRequest method
+    $.ajax({
+      url: 'MERCHANT_BACKEND_CREATE_API_CALLER_URL',
+      type: 'POST',
+      contentType: 'application/json',
+      success: function(data) {
+        data = JSON.parse(data);
+        if (data && data.paymentID != null) {
+          paymentID = data.paymentID;
+          bKash.create().onSuccess(data); //pass the whole response data in bKash.create().onSucess() method as a parameter
+        } else {
+          bKash.create().onError();
+        }
+      },
+      error: function() {
+        bKash.create().onError();
+      }
+    });
+  },
+  executeRequestOnAuthorization: function() {
+    $.ajax({
+      url: 'MERCHANT_BACKEND_EXECUTE_API_CALLER_URL',
+      type: 'POST',
+      contentType: 'application/json',
+      data: JSON.stringify({
+        "paymentID": paymentID
+      }),
+      success: function(data) {
+        data = JSON.parse(data);
+        if (data && data.paymentID != null) {
+          window.location.href = "success.html";//Merchant’s success page
+        } else {
+          bKash.execute().onError();
+        }
+      },
+      error: function() {
+        bKash.execute().onError();
+      }
+    });
+  }
+});
+
+  </script>
+
+</head>
+<body>
+
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" />
+
+<form method="post">{% csrf_token %}
+<div class="container">
+    <!-- product -->
+    <div class="product-content product-wrap clearfix product-deatil">
+        <div class="row">
+
+
+            <div class="col-md-6 col-md-offset-1 col-sm-12 col-xs-12">
+                <div class="card" style="width: 100%;">
+                    <div class="card-body">
+                        <img src="{{details.thumbnail.url}}" height="50px" width="50px">
+                        <span><strong>{{details.name}}</strong></span>
+
+                        <br><br><p>Discount and Payments</p>
+
+
+                        <span>Discount<span style="float:right;">{{details.offerParsentage}}</span></span><br>
+                        <span>Voucher<span style="float:right;">No Applicable Voucher </span></span><br>
+
+                        <hr>
+
+                        <p>Order Summary <span style="float:right;"><span style="font-size:23px;">৳ </span>{{details.price}}</span></p>
+                        <p>Total Items  <span style="float:right;">1</span></p>
+                        <p>Delivery Fee <span style="float:right;"><span style="font-size:23px;">৳ </span>50</span></p>
+                        <p>Total Payment <span style="float:right;"><span style="font-size:23px;">৳ </span>300</span></p>
+                    </div>
+                </div>
+                <ul class="nav justify-content-end m-2 mb-5">
+
+                            <button type="submit" class="btn btn-success" id="bKash_button">Place Order</button>
+
+                </ul>
+            </div>
+
+
+            <div class="col-md-5 col-sm-12 col-xs-12">
+                <div class="product-image">
+
+
+
+                        <div class="carousel-inner">
+                            <div class="mb-2">
+                                <label for="exampleFormControlInput1" class="form-label">Full Name</label>
+                                <input type="text" required  class="form-control" id="exampleFormControlInput1" placeholder="Input Full Name">
+                            </div>
+
+                            <div class="mb-2">
+                                <label for="exampleFormControlInput1" class="form-label">Number</label>
+                                <input type="number" required class="form-control" id="exampleFormControlInput1" placeholder="Input Number">
+                            </div>
+
+                            <div class="mb-2">
+                                <label for="exampleFormControlInput1" class="form-label">Email address</label>
+                                <input type="email" required class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
+                            </div>
+
+                            <label for="exampleFormControlInput1" class="form-label">Divison</label>
+                            <select class="form-select mb-3" required aria-label="Default select example">
+
+                                <option selected>Select Your division</option>
+                                <option value="1">One</option>
+                                <option value="2">Two</option>
+                                <option value="3">Three</option>
+                            </select>
+
+                            <label for="exampleFormControlInput1"  class="form-label">City</label>
+                            <select class="form-select mb-3" required aria-label="Default select example">
+                                <option selected>Select Your City</option>
+                                <option value="1">One</option>
+                                <option value="2">Two</option>
+                                <option value="3">Three</option>
+                            </select>
+
+                            <label for="exampleFormControlInput1" class="form-label">Area</label>
+                            <select class="form-select mb-3" required aria-label="Default select example">
+                                <option selected>Select Your Area</option>
+                                <option value="1">One</option>
+                                <option value="2">Two</option>
+                                <option value="3">Three</option>
+                            </select>
+
+                            <div class="mb-2">
+                                <label for="exampleFormControlInput1" class="form-label">Address</label>
+                                <input type="text" class="form-control" required id="exampleFormControlInput1" placeholder="Input Address">
+                            </div>
+
+
+
+                        </div>
+
+                        <ul class="nav justify-content-end m-2">
+
+                            <button type="submit" class="btn btn-primary">Save Address</button>
+
+                        </ul>
+
+                </div>
+            </div>
+</div>
+
+</div>
+</form>
+
+
+
+<style type="text/css">
+body{
+    margin-top:20px;
+    background:#eee;
+}
+
+
+.product-content {
+    border: 1px solid #dfe5e9;
+    margin-bottom: 20px;
+    margin-top: 12px;
+    background: #fff
+}
+
+.product-content .carousel-control.left {
+    margin-left: 0
+}
+
+.product-content .product-image {
+    background-color: #fff;
+    display: block;
+    min-height: 238px;
+    overflow: hidden;
+    position: relative
+}
+
+.product-content .product-deatil {
+    border-bottom: 1px solid #dfe5e9;
+    padding-bottom: 17px;
+    padding-left: 16px;
+    padding-top: 16px;
+    position: relative;
+    background: #fff
+}
+
+.product-content .product-deatil h5 a {
+    color: #2f383d;
+    font-size: 15px;
+    line-height: 19px;
+    text-decoration: none;
+    padding-left: 0;
+    margin-left: 0
+}
+
+.product-content .product-deatil h5 a span {
+    color: #9aa7af;
+    display: block;
+    font-size: 13px
+}
+
+.product-content .product-deatil span.tag1 {
+    border-radius: 50%;
+    color: #fff;
+    font-size: 15px;
+    height: 50px;
+    padding: 13px 0;
+    position: absolute;
+    right: 10px;
+    text-align: center;
+    top: 10px;
+    width: 50px
+}
+
+.product-content .product-deatil span.sale {
+    background-color: #21c2f8
+}
+
+.product-content .product-deatil span.discount {
+    background-color: #71e134
+}
+
+.product-content .product-deatil span.hot {
+    background-color: #fa9442
+}
+
+.product-content .description {
+    font-size: 12.5px;
+    line-height: 20px;
+    padding: 10px 14px 16px 19px;
+    background: #fff
+}
+
+.product-content .product-info {
+    padding: 11px 19px 10px 20px
+}
+
+.product-content .product-info a.add-to-cart {
+    color: #2f383d;
+    font-size: 13px;
+    padding-left: 16px
+}
+
+.product-content name.a {
+    padding: 5px 10px;
+    margin-left: 16px
+}
+
+.product-info.smart-form .btn {
+    padding: 6px 12px;
+    margin-left: 12px;
+    margin-top: -10px
+}
+
+.product-entry .product-deatil {
+    border-bottom: 1px solid #dfe5e9;
+    padding-bottom: 17px;
+    padding-left: 16px;
+    padding-top: 16px;
+    position: relative
+}
+
+.product-entry .product-deatil h5 a {
+    color: #2f383d;
+    font-size: 15px;
+    line-height: 19px;
+    text-decoration: none
+}
+
+.product-entry .product-deatil h5 a span {
+    color: #9aa7af;
+    display: block;
+    font-size: 13px
+}
+
+.load-more-btn {
+    background-color: #21c2f8;
+    border-bottom: 2px solid #037ca5;
+    border-radius: 2px;
+    border-top: 2px solid #0cf;
+    margin-top: 20px;
+    padding: 9px 0;
+    width: 100%
+}
+
+.product-block .product-deatil p.price-container span,
+.product-content .product-deatil p.price-container span,
+.product-entry .product-deatil p.price-container span,
+.shipping table tbody tr td p.price-container span,
+.shopping-items table tbody tr td p.price-container span {
+    color: #21c2f8;
+    font-family: Lato, sans-serif;
+    font-size: 24px;
+    line-height: 20px
+}
+
+.product-info.smart-form .rating label {
+    margin-top: 0
+}
+
+.product-wrap .product-image span.tag2 {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    padding: 10px 0;
+    color: #fff;
+    font-size: 11px;
+    text-align: center
+}
+
+.product-wrap .product-image span.sale {
+    background-color: #57889c
+}
+
+.product-wrap .product-image span.hot {
+    background-color: #a90329
+}
+
+.shop-btn {
+    position: relative
+}
+
+.shop-btn>span {
+    background: #a90329;
+    display: inline-block;
+    font-size: 10px;
+    box-shadow: inset 1px 1px 0 rgba(0, 0, 0, .1), inset 0 -1px 0 rgba(0, 0, 0, .07);
+    font-weight: 700;
+    border-radius: 50%;
+    padding: 2px 4px 3px!important;
+    text-align: center;
+    line-height: normal;
+    width: 19px;
+    top: -7px;
+    left: -7px
+}
+
+.description-tabs {
+    padding: 30px 0 5px!important
+}
+
+.description-tabs .tab-content {
+    padding: 10px 0
+}
+
+.product-deatil {
+    padding: 30px 30px 50px
+}
+
+.product-deatil hr+.description-tabs {
+    padding: 0 0 5px!important
+}
+
+.product-deatil .carousel-control.left,
+.product-deatil .carousel-control.right {
+    background: none!important
+}
+
+.product-deatil .glyphicon {
+    color: #3276b1
+}
+
+.product-deatil .product-image {
+    border-right: none!important
+}
+
+.product-deatil .name {
+    margin-top: 0;
+    margin-bottom: 0
+}
+
+.product-deatil .name small {
+    display: block
+}
+
+.product-deatil .name a {
+    margin-left: 0
+}
+
+.product-deatil .price-container {
+    font-size: 24px;
+    margin: 0;
+    font-weight: 300
+}
+
+.product-deatil .price-container small {
+    font-size: 12px
+}
+
+.product-deatil .fa-2x {
+    font-size: 16px!important
+}
+
+.product-deatil .fa-2x>h5 {
+    font-size: 12px;
+    margin: 0
+}
+
+.product-deatil .fa-2x+a,
+.product-deatil .fa-2x+a+a {
+    font-size: 13px
+}
+
+.profile-message ul {
+  list-style: none ;
+}
+
+.product-deatil .certified {
+    margin-top: 10px
+}
+
+.product-deatil .certified ul {
+    padding-left: 0
+}
+
+.product-deatil .certified ul li:not(first-child) {
+    margin-left: -3px
+}
+
+.product-deatil .certified ul li {
+    display: inline-block;
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    padding: 13px 19px
+}
+
+.product-deatil .certified ul li:first-child {
+    border-right: none
+}
+
+.product-deatil .certified ul li a {
+    text-align: left;
+    font-size: 12px;
+    color: #6d7a83;
+    line-height: 16px;
+    text-decoration: none
+}
+
+.product-deatil .certified ul li a span {
+    display: block;
+    color: #21c2f8;
+    font-size: 13px;
+    font-weight: 700;
+    text-align: center
+}
+
+.product-deatil .message-text {
+    width: calc(100% - 70px)
+}
+
+@media only screen and (min-width:1024px) {
+    .product-content div[class*=col-md-4] {
+        padding-right: 0
+    }
+    .product-content div[class*=col-md-8] {
+        padding: 0 13px 0 0
+    }
+    .product-wrap div[class*=col-md-5] {
+        padding-right: 0
+    }
+    .product-wrap div[class*=col-md-7] {
+        padding: 0 13px 0 0
+    }
+    .product-content .product-image {
+        border-right: 1px solid #dfe5e9
+    }
+    .product-content .product-info {
+        position: relative
+    }
+}
+
+.message img.online {
+    width:40px;
+    height:40px;
+}
+</style>
+
+<script type="text/javascript">
+
+</script>
+</body>
+</html>

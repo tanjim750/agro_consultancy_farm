@@ -1,0 +1,111 @@
+{% extends 'adminlayout.html' %}
+
+{% block link %}/admin/contact{% endblock %}
+{% block body %}
+<br>
+     <h1 style="font-size:30px;">Main Body Container</h1>
+
+  {% with messages = get_flashed_messages() %}
+  {% if messages %}
+    {% for message in messages %}
+  <div class="alert alert-primary" role="alert">
+    <ul class="nav justify-content-center">
+  <li class="nav-item">
+
+      {{ message }}
+  </li>
+    </ul>
+  </div>
+    {% endfor %}
+
+  {% endif %}
+{% endwith %}
+
+  <br>
+  <div class="input-group mb-3">
+  <span class="input-group-text" id="basic-addon1">Background Image</span>
+  <input type="file" name="bd_img" class="form-control"  aria-label="Username" aria-describedby="basic-addon1">
+</div>
+
+<div class="input-group mb-3">
+  <span class="input-group-text" id="basic-addon1">Body Title</span>
+  <input type="text" name="bd_title" value="{{condt.bd_title}}" class="form-control"  aria-label="Username" aria-describedby="basic-addon1">
+</div>
+
+
+<div class="input-group mb-3">
+  <span class="input-group-text" id="basic-addon1">Button 1</span>
+  <input type="text" name="button1N" value="{{condt.button1N}}" class="form-control"  aria-label="Username" aria-describedby="basic-addon1">
+</div>
+<div class="input-group mb-3">
+  <span class="input-group-text" id="basic-addon1">Button 2</span>
+  <input type="text"name="button2N" value="{{condt.button2N}}" class="form-control"  aria-label="Username" aria-describedby="basic-addon1">
+</div>
+
+    <div class="input-group mb-3">
+  <span class="input-group-text" id="basic-addon1">Button 1 Link</span>
+  <input type="text" name="button1L" value="{{condt.button1L}}" class="form-control"  aria-label="Username" aria-describedby="basic-addon1">
+</div>
+<div class="input-group mb-3">
+  <span class="input-group-text" id="basic-addon1">Button 2 Link</span>
+  <input type="text" name="button2L" value="{{condt.button2L}}" class="form-control"  aria-label="Username" aria-describedby="basic-addon1">
+</div>
+
+
+
+
+
+<h1 style="font-size:30px;">Top Section</h1>
+
+<div class="input-group mb-3">
+  <span class="input-group-text" id="basic-addon1">Top Text</span>
+  <input type="text" name="topTx" value="{{condt.topTx}}" class="form-control"  aria-label="Username" aria-describedby="basic-addon1">
+</div>
+<div class="input-group mb-3">
+  <span class="input-group-text" id="basic-addon1">Top Title</span>
+  <input type="text"name="topTi" value="{{condt.topTi}}" class="form-control"  aria-label="Username" aria-describedby="basic-addon1">
+</div>
+
+<h1 style="font-size:30px;">Contact Information Section</h1>
+
+<div class="input-group mb-3">
+  <span class="input-group-text" id="basic-addon1">Contact Top Title</span>
+  <input type="text" name="conTi" value="{{condt.conTi}}" class="form-control"  aria-label="Username" aria-describedby="basic-addon1">
+</div>
+
+    <div class="input-group mb-3">
+  <span class="input-group-text" id="basic-addon1">Location Title</span>
+  <input type="text" name="locationT" value="{{condt.locationT}}" class="form-control"  aria-label="Username" aria-describedby="basic-addon1">
+</div>
+<div class="input-group mb-3">
+  <span class="input-group-text" id="basic-addon1">Location</span>
+  <input type="text" name="location" value="{{condt.location}}" class="form-control"  aria-label="Username" aria-describedby="basic-addon1">
+</div>
+
+<div class="input-group mb-3">
+  <span class="input-group-text" id="basic-addon1">Email Title</span>
+  <input type="text" name="emailT" value="{{condt.emailT}}" class="form-control"  aria-label="Username" aria-describedby="basic-addon1">
+</div>
+
+
+<div class="input-group mb-3">
+  <span class="input-group-text" id="basic-addon1">Email</span>
+  <input type="text" name="email" value="{{condt.email}}" class="form-control"  aria-label="Username" aria-describedby="basic-addon1">
+</div>
+<div class="input-group mb-3">
+  <span class="input-group-text" id="basic-addon1">Number Title</span>
+  <input type="text"name="numberT" value="{{condt.numberT}}" class="form-control"  aria-label="Username" aria-describedby="basic-addon1">
+</div>
+
+    <div class="input-group mb-3">
+  <span class="input-group-text" id="basic-addon1">Number</span>
+  <input type="text" name="number" value="{{condt.number}}" class="form-control"  aria-label="Username" aria-describedby="basic-addon1">
+</div>
+
+  <br>
+
+
+
+  </form>
+
+  {% endblock %}

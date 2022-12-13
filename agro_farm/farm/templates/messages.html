@@ -1,0 +1,25 @@
+{% extends 'adminlayout.html' %}
+
+{% block style %}
+#sbtn{
+display:none;
+}
+{% endblock %}
+
+{% block body %}
+
+{% for i in msg %}
+<div id="msg" class="alert alert-dark" role="alert">
+  <a href="/admin/read/messages{{i.id}}">
+    {% if i.id not in session %}
+    <h6> <strong>{{i.name}}</strong>
+    <span class="badge bg-red" style="background:red;">New</span> </h6>
+    {% else %}
+    {{i.name}}
+    <br>
+    {% endif %}
+    <span>{{i.message[:8]}}.....</span></a>
+</div>
+    {% endfor %}
+
+{% endblock %}
