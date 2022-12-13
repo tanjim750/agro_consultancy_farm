@@ -220,7 +220,7 @@ class post_comments(models.Model):
 	postId = models.ForeignKey(posts, on_delete=models.CASCADE)
 	name = models.CharField(max_length=100)
 	image = models.ImageField(upload_to='img', default='img/deafult.png')
-	number = models.CharField(max_length=100)
+	number = models.CharField(max_length=100, null=True, blank=True)
 	comment = models.TextField()
 	date = models.DateTimeField(auto_now_add=True)
 
@@ -238,7 +238,7 @@ class comments_reply(models.Model):
 	childrens = models.IntegerField(null=True, blank=True)
 	name = models.CharField(max_length=100)
 	image = models.ImageField(upload_to='img', default='img/deafult.png')
-	number = models.CharField(max_length=100)
+	number = models.CharField(max_length=100, null=True, blank=True)
 	reply = models.TextField()
 	date = models.DateTimeField(auto_now_add=True)
 

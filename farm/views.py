@@ -90,7 +90,9 @@ def addproduct(request):
 def about(request):
     footer = home.objects.get(id=1)
     aboutdt = aboutme.objects.get(id = 1)
-    info = profile.objects.get(user = request.user)
+    info = ''
+    if request.user.is_authenticated:
+        info = profile.objects.get(user=request.user)
     context = {'aboutdt':aboutdt , 'footer':footer, 'info':info}
     return render(request , 'about.html' , context)
 
@@ -99,7 +101,9 @@ def service(request):
     data = services.objects.get(id = 1)
     testimonia_image = testimonial.objects.get(id=1)
     testimonia_data = testimonial.objects.all()
-    info = profile.objects.get(user = request.user)
+    info = ''
+    if request.user.is_authenticated:
+        info = profile.objects.get(user=request.user)
     context = {'footer':footer ,"data" :data ,
                'testimonia_image':testimonia_image, 'testimonia_data':testimonia_data,
                'info':info}
@@ -109,14 +113,18 @@ def products(request):
     footer = home.objects.get(id=1)
     product = addproducts.objects.all()
     feature = features.objects.get(id = 1)
-    info = profile.objects.get(user = request.user)
+    info = ''
+    if request.user.is_authenticated:
+        info = profile.objects.get(user=request.user)
     context = {'footer': footer, "product": product , 'feature':feature, 'info':info}
     return render(request, 'product.html', context)
 
 def viewproduct(request, id , value):
     details = addproducts.objects.get(productId = id)
     img = details.productimages_set.all()
-    info = profile.objects.get(user = request.user)
+    info = ''
+    if request.user.is_authenticated:
+        info = profile.objects.get(user=request.user)
     context = {'details':details , 'img':img, 'info':info}
     return render(request, 'produtsdtl.html',context)
 
@@ -144,7 +152,9 @@ def contact(request):
                          number=number,
                          message=message)
         msg.save()
-    info = profile.objects.get(user = request.user)
+    info = ''
+    if request.user.is_authenticated:
+        info = profile.objects.get(user=request.user)
     context = {'footer':footer, 'condt':condt, 'info':info }
     return render(request, 'contact.html', context)
 
@@ -154,8 +164,9 @@ def blogposts(request):
     condt = contact_page.objects.get(id= 1)
     post = posts.objects.all()
     # img = posts.objects.get(id=1)
-    info = profile.objects.get(user = request.user)
-
+    info = ''
+    if request.user.is_authenticated:
+        info = profile.objects.get(user=request.user)
     context = {'footer':footer, 'condt':condt, 'post':post, 'info':info }
 
     return render(request, 'blog.html', context)
@@ -212,10 +223,14 @@ def viewblogposts(request,id,value):
                                               number = number,
                                               )
         elif request.POST.get('type') == 'cmnt':
+            comment = request.POST['comment']
             if 'name' in request.session and 'number' in request.session:
                 name = request.session['name']
                 number = request.session['number']
-                comment = request.POST['comment']
+
+            elif request.user.is_authenticated:
+                name= request.user.username
+                number = request.user.profile.number
             else:
                 name = request.POST['name']
                 number = request.POST['number']
@@ -228,8 +243,9 @@ def viewblogposts(request,id,value):
                                     name = name,
                                     number = number,
                                     comment = comment)
-    info = profile.objects.get(user = request.user)
-
+    info = ''
+    if request.user.is_authenticated:
+        info = profile.objects.get(user=request.user)
     context = {'footer':footer, 'condt':condt, 'post':post , 'comments':comments,
                'number_of_comments':number_of_comments, 'info':info }
 
