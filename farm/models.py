@@ -1,5 +1,6 @@
 from django.db import models
 import uuid
+from django.contrib.auth.models import User
 # Create your models here.
 
 class sloganBody(models.Model):
@@ -257,13 +258,37 @@ class messageme(models.Model):
 
 class chat(models.Model):
 	message = models.TextField()
-	user = models.CharField(max_length=1000000, default='user')
-	room = models.CharField(max_length=1000000, default='room')
+	user = models.ForeignKey(User, on_delete=models.CASCADE)
+	type = models.IntegerField(null=True, blank=True)
+	seen = models.IntegerField(default='0')
 	sent_date = models.DateTimeField(auto_now_add=True)
 
 	def __repr__(self) -> str:
-		return f"{self.message}"
+		return f"{self.id}:{self.user}:{self.message}"
 
+	# class Meta:
+	# 	ordering = ['-sent_date']
+
+
+class reply(models.Model):
+	number_of_message = models.IntegerField(default=0)
+	user = models.OneToOneField(User, on_delete=models.CASCADE)
+
+	def __repr__(self) -> str:
+		return f"{self.number_of_message}"
+
+class profile(models.Model):
+	user = models.OneToOneField(User, on_delete=models.CASCADE)
+	name = models.CharField(max_length=100, null=True , blank=True)
+	number = models.CharField(max_length=20, null=True , blank=True)
+	nationality = models.CharField(max_length=100, null=True , blank=True)
+	date_of_birth = models.CharField(max_length=200,null=True , blank=True)
+	gender = models.CharField(max_length=10, null=True , blank=True)
+	address = models.CharField(max_length=5000,null=True , blank=True)
+	image = models.ImageField(upload_to='img', default='/img/deafult.png')
+
+	def __repr__(self) -> str:
+		return f'{self.name} {self.number}'
 
 
 

@@ -3,7 +3,8 @@ from .models import (sloganBody , home ,deletedSlogan , aboutme , services ,
                      contactme , features , addproducts,
                      productimages, contact_page, testimonial,
                      posts, messageme, post_comments,
-                     comments_reply, chat)
+                     comments_reply, chat, reply,
+                     profile)
 
 # Register your models here.
 
@@ -95,10 +96,22 @@ class admin_comments_reply(admin.ModelAdmin):
 @admin.register(chat)
 class admin_chat(admin.ModelAdmin):
     list_display = [
-        'message'
+        'id','user','message'
     ]
 
 
+@admin.register(reply)
+class admin_reply(admin.ModelAdmin):
+    list_display = [
+        'id','user','number_of_message'
+    ]
+
+@admin.register(profile)
+class profile(admin.ModelAdmin):
+    list_display = [
+        'user', 'name', 'number'
+
+    ]
 
 
 

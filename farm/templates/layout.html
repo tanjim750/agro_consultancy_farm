@@ -79,14 +79,31 @@
         }
 
         .user-icon{
-            padding: 5px 5px 7px 5px;
-            background:red;
-            text-align:center;
-            outline:15px;
-            border-color:blue;
+            background:transparent;
+            outline:none;
+            border:none;
             border-radius:50%;
 
         }
+
+        .profile{
+
+            width:350px;
+            right:15px;
+            border-radius:15px;
+
+
+        }
+
+        .msg-box{
+            z-index:-1;
+            opacity:1;
+            display:block;
+            padding:20px 20px 20px 20px;
+
+            background:url(/img/pattern.png);
+        }
+
 
 
         {% block style %}{% endblock %}
@@ -148,7 +165,48 @@
 
         </div>
         {% if request.user.is_authenticated %}
-            <div class="user-icon"><span class="fas fa-user-alt" style="font-size:30px; color:#fff;"></span></div>
+
+            <div class="btn-group dropstart">
+
+                <button type="button" class="user-icon" data-bs-toggle="dropdown" aria-expanded="false">
+
+                    <img src="{{info.image.url}}" height="45px" width="45px" style="border-radius:50%;">
+
+                </button>
+
+                <ul class="dropdown-menu profile" >
+
+                    <li class="nav justify-content-center">
+
+                        <a class="" href="{{info.image.url}}"><img src="{{info.image.url}}" height="80px" width="80px" style="margin-top:10px; border-radius:50%;"></a>
+
+                    </li>
+                    <li class="nav justify-content-center">
+
+                        <strong style="font-size:15px; color:#000;">@{{request.user}}</strong>
+                    </li>
+                    <li class="nav justify-content-center">
+                        <span style="font-size:14px;">{{request.user.email}}</span>
+                    </li>
+                    <br>
+                        <li><a class="dropdown-item" href="/setup-profile-information"><span class="far fa-user-circle"> </span> Account Info</a></li>
+                        <li><a class="dropdown-item" href="#"><span class="fa fa-shopping-bag"> </span> My Orders</a></li>
+                        <li><a class="dropdown-item" href="#"><span class="fa fa-cart-plus"> </span> Carts</a></li>
+                        <li><a class="dropdown-item" href="#"><span class="fas fa-university"> </span> Address Book</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="#"><span class="fas fa-user-cog"> </span> Settings</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li class="nav justify-content-center">
+
+                        <a href="/accounts/logout/" style="width:98%;" class="btn btn-light"><span class="fas fa-power-off"> </span> Logout</a>
+                    </li>
+
+
+                </ul>
+
+            </div>
+
+
         {% else %}
         <button style="background:red; border-color:#418df0;">
             <a href="/accounts/login/"> <span style="color:#fff; font-size:17px;"><strong>Login</strong></span></a>
@@ -156,7 +214,6 @@
         {% endif %}
     </nav>
     <!-- Navbar End -->
-
 
 
 
@@ -172,8 +229,8 @@
 <!-- Message Button -->
 
 
-
-    <button type="button" class="msg-btn" data-bs-toggle="modal" data-bs-target="#staticBackdrop" >
+    {% if request.user.is_authenticated %}
+    <button type="button" class="msg-btn" data-bs-toggle="modal" data-bs-target="#staticBackdrop" onclick="myFunction()">
        <img src="/img/messages-icon.png" class="">
     </button>
 
@@ -192,9 +249,10 @@
 
                     </div>
 
-                    <div class="modal-body" >
+                    <div class="modal-body"  style="padding: 0 0 0 0 ;">
 
-                        <div class="msg-box" id="display">
+                        <div class="msg-box" id="display" >
+
 <!--                            <div class="my-msg">-->
 <!--                               <span>We Are Professional Organic Farmers</span>-->
 <!--                            </div>-->
@@ -220,11 +278,11 @@
                     <div class="modal-footer" >
 
 
-
+                            <input type="hidden" name="type" id="type" value="1">
                             <textarea class="form-control" id="chat-message"
-                                  placeholder="Your Meaage" style="width:80%; border-radius:25px;" ></textarea>
+                                  placeholder="Your Message" style="width:80%; border-radius:25px;" ></textarea>
 
-                            <button type="submit" class="btn sm-btn btn-primary">Send</button>
+                            <button type="submit" class="btn sm-btn btn-primary" style="border-radius:10px;">Send</button>
 
 
                     </div>
@@ -235,6 +293,30 @@
             </div>
 
         </div>
+
+    {% else %}
+    <button type="button" class="msg-btn" data-bs-toggle="modal" data-bs-target="#messageError">
+       <img src="/img/messages-icon.png" class="">
+    </button>
+        <div class="modal fade" id="messageError" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">Login Error!!</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            You are not Authenticated user. For sending message to admin please login your account or register a new account.
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn sm-btn btn-danger" data-bs-dismiss="modal" style="border-radius:10px;">Close</button>
+            <a href="/accounts/login/" type="button" class="btn sm-btn btn-primary" style="border-radius:10px;">Login</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {% endif %}
     <!--Message button-->
 
  <!-- Team Start -->
@@ -452,59 +534,83 @@
 
     <!-- Template Javascript -->
     <script src="{% static 'js/main.js' %}"></script>
+    {% if request.user.is_authenticated %}
+        <script type="text/javascript">
+          $(document).on('submit','#post-form',function(e){
+            e.preventDefault();
 
-<script type="text/javascript">
-  $(document).on('submit','#post-form',function(e){
-    e.preventDefault();
-
-    $.ajax({
-      type:'POST',
-      url:'/save-message/',
-      data:{
-          message:$('#chat-message').val(),
-        csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
-      },
-      success: function(data){
-         //alert(data)
-      }
-    });
-    document.getElementById('chat-message').value = ''
-  });
-</script>
-<script   src="https://code.jquery.com/jquery-3.1.1.min.js"   integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="   crossorigin="anonymous"></script>
+            $.ajax({
+              type:'POST',
+              url:'/save-message/',
+              data:{
+                  message:$('#chat-message').val(),
+                  type:$('#type').val(),
+                csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+              },
+              success: function(data){
+                 //alert(data)
+              }
+            });
+            document.getElementById('chat-message').value = ''
+          });
+        </script>
+        <script   src="https://code.jquery.com/jquery-3.1.1.min.js"   integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="   crossorigin="anonymous"></script>
 
 
-<script>
-$(document).ready(function(){
+        <script>
+        $(document).ready(function(){
 
-setInterval(function(){
-    $.ajax({
-        type: 'GET',
-        url : "/get-message/",
-        success: function(response){
-                //
-            $("#display").empty();
-            for (var key in response.messages)
-            {
-                var temp="<div class='my-msg'><span>"+response.messages[key].message+"</span></div><div class='another-msg'><span>"+response.messages[key].message+"</span></div>";
+        setInterval(function(){
+            $.ajax({
+                type: 'GET',
+                url : "/get-message/",
+                success: function(response){
+                        //
+                    $("#display").empty();
+                    for (var key in response.messages)
+                    {
+                        if (response.messages[key].type == 1) {
+                            var temp="<div class='my-msg'><span>"+response.messages[key].message+"</span></div>";
+                        }
+                        if (response.messages[key].type == 0) {
 
-                $("#display").append(temp);
-                var objDiv = document.getElementById('display');
-                objDiv.scrollTop = objDiv.scrollHeight
+                            var temp="<div class='another-msg'><span>"+response.messages[key].message+"</span></div>";
 
-            }
-        },
+                        }
 
-    });
-},0);
-})
+                        $("#display").append(temp);
 
-</script>
-<script>
-var objDiv = document.getElementById('display');
-objDiv.scrollTop = objDiv.scrollHeight
+                        if (response.numberOfmsg == response.count ){
+                            var objDiv = document.getElementById('display');
+                            objDiv.scrollTop = objDiv.scrollHeight
+                        }
 
-</script>
+                    }
+                },
+
+            });
+        },500);
+        })
+
+        </script>
+
+<!--        <script>-->
+
+<!--        -->
+<!--        function myFunction() {-->
+<!--            var objDiv = document.getElementById('display');-->
+<!--            objDiv.scrollTop = objDiv.scrollHeight-->
+<!--        }-->
+<!--        </script>-->
+    <script>
+
+        $(document).ready(function(){
+            $('.msg-box').scrollTop( $('.msg-box')[0].scrollHeight );
+        });
+
+    </script>
+
+    {% endif %}
 
     {% block script %} {% endblock %}
 </body>
