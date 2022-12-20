@@ -1,6 +1,12 @@
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.forms import ModelForm
+from django import forms
+from django.core import validators
+
+class password_reset_form(forms.Form):
+    new_password1 = forms.CharField()
+    new_password2 = forms.CharField()
 
 class register_form(UserCreationForm):
     class Meta:

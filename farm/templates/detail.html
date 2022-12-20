@@ -65,13 +65,7 @@ margin:5px 10px auto;
 color:#fff;
 }
 
-.cmntbox img {
-height:42px;
-widht:42px;
-border-radius:50%;
-margin:-1px -1px 0 0 ;
 
-}
 
 .cmntbox .cmntbtn {
 
@@ -155,7 +149,8 @@ color:gray;
 
 
                          <p><div class="d-flex mb-4">
-                        <img src="{{cmnt.image.url}}" class="img-fluid" style="width: 45px; height: 45px;">
+                        <img src="{{cmnt.image.url}}" class="img-fluid"
+                             style="width: 40px; height: 40px; border-radius:50%;">
                         <div class="ps-3">
                             <h6><a href="">{{cmnt.name}}</a> <br> <span style="font-size:11px; color:gray;">{{cmnt.date}}</span></h6>
                             <p>{{cmnt.comment}}</p>
@@ -173,7 +168,8 @@ color:gray;
                                     <form action="/blog-post/{{post.postId}}/{{post.title}}#allcmntbox" id="post-commen" method="post">
                                         {% csrf_token %}
                                    <div class="cmntbox ">
-                                        <img src="/img/deafult.png">
+                                        <img {% if request.user.is_authenticated %} src="{{request.user.profile.image.url}}" {% else %} src="/img/deafult.png"  {% endif %}
+                                                    style="width: 40px; height: 40px; border-radius:50%;">
                                             <input type="text" name="reply" id="comment" class="cmnt" placeholder="Reply To {{cmnt.name}}" >
                                             <input type="hidden" value="rtc" name="type">
                                             <input type="hidden" value="{{cmnt.commentId}}" name="parent">
@@ -240,7 +236,8 @@ color:gray;
 
                                     <p><div class="d-flex mb-4">
 
-                                    <img src="{{reply.image.url}}" class="img-fluid" style="width: 45px; height: 45px;">
+                                    <img src="{{reply.image.url}}" class="img-fluid"
+                                         style="width: 40px; height: 40px; border-radius:50%;">
                                         <div class="ps-3">
                                             <h6><a href="">{{reply.name}}</a> <br> <span style="font-size:11px; color:gray;">{{reply.date}}</span></h6>
                                                 <p>{{reply.reply}}</p>
@@ -258,7 +255,8 @@ color:gray;
                                     <form action="/blog-post/{{post.postId}}/{{post.title}}#allcmntbox" id="post-commen" method="post">
                                         {% csrf_token %}
                                    <div class="cmntbox ">
-                                        <img src="/img/deafult.png">
+                                        <img {% if request.user.is_authenticated %} src="{{request.user.profile.image.url}}" {% else %} src="/img/deafult.png"  {% endif %}
+                                                    style="width: 40px; height: 40px; border-radius:50%;">
                                             <input type="text" name="replyto" id="comment" class="cmnt" placeholder="Reply To {{reply.name}}" >
                                             <input type="hidden" value="rtr" name="type">
                                             <input type="hidden" value="{{cmnt.commentId}}" name="parent">
@@ -314,7 +312,8 @@ color:gray;
 
 
                             <p><div class="d-flex mb-4">
-                        <img src="{{replyofreply.image.url}}" class="img-fluid" style="width: 45px; height: 45px;">
+                        <img src="{{replyofreply.image.url}}" class="img-fluid"
+                                style="width: 40px; height: 40px; border-radius:50%;">
                         <div class="ps-3">
                             <h6><a href="">{{replyofreply.name}}</a> <br> <span style="font-size:11px; color:gray;">{{replyofreply.date}}</span></h6>
                             <p>{{replyofreply.reply}}</p>
@@ -332,7 +331,8 @@ color:gray;
                                     <form action="/blog-post/{{post.postId}}/{{post.title}}#allcmntbox" id="post-commen" method="post">
                                         {% csrf_token %}
                                         <div class="cmntbox ">
-                                            <img src="/img/deafult.png">
+                                            <img {% if request.user.is_authenticated %} src="{{request.user.profile.image.url}}" {% else %} src="/img/deafult.png"  {% endif %}
+                                                    style="width: 40px; height: 40px; border-radius:50%;">
                                             <input type="text" name="replyto" id="comment" class="cmnt" placeholder="Reply To {{replyofreply.name}}" >
                                             <input type="hidden" value="rtr" name="type">
                                             <input type="hidden" value="{{cmnt.commentId}}" name="parent">
@@ -419,7 +419,8 @@ color:gray;
                         {% if 'name' in request.session and 'number' in request.session or request.user.is_authenticated %}
 
                             <div class="cmntbox">
-                                    <img src="/img/deafult.png">
+                                    <img {% if request.user.is_authenticated %} src="{{request.user.profile.image.url}}" {% else %} src="/img/deafult.png"  {% endif %}
+                                    style="width: 40px; height: 40px; border-radius:50%;">
                                 <input type="hidden" value="cmnt" name="type">
                                 <input type="text" name="comment" id="comment" class="cmnt" placeholder="Comment" >
                                 <button type="submit" class="cmntbtn">Send</button>

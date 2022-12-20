@@ -59,6 +59,7 @@
     </a>
                 <!-- Modal -->
              <form action="http://localhost:8000/password-reset/" method="post">{% csrf_token %}
+
                 <div class="modal fade" id="forgot_password" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                   <div class="modal-dialog">
                     <div class="modal-content">
@@ -70,7 +71,7 @@
                                 Forgotten your password? Enter your email address below, and we’ll email instructions for setting a new one.<br>
                         <div class="mb-3">
                           <label for="exampleFormControlInput1" class="form-label">Email address</label>
-                          <input type="email" name="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
+                          <input type="email" name="email" required class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
                         </div>
 
                       </div>

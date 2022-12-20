@@ -13,6 +13,7 @@ urlpatterns = [
     path('blog-posts' , views.blogposts),
     path('product/details/<id>/<value>' , views.viewproduct),
     path('shopping/product=<id>' , views.shopping),
+    path('confirm/shopping/<pd_id>/<amount>/<quantity>/' , views.order_product),
     path('blog-post/<id>/<value>' , views.viewblogposts),
     path('comments/<id>' , views.displayComments),
     path('comment-replay' , views.comment_replay),
@@ -25,4 +26,5 @@ urlpatterns = [
     path('user_messages/' , views.user_messages),
     path('messages/<user>' , views.showUserMessages),
     path('setup-profile-information' , views.profile_info),
+    path('accounts/setting/' , views.account_setting),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

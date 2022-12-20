@@ -4,7 +4,7 @@ from .models import (sloganBody , home ,deletedSlogan , aboutme , services ,
                      productimages, contact_page, testimonial,
                      posts, messageme, post_comments,
                      comments_reply, chat, reply,
-                     profile)
+                     profile, orderedProduct)
 
 # Register your models here.
 
@@ -113,6 +113,10 @@ class profile(admin.ModelAdmin):
 
     ]
 
-
+@admin.register(orderedProduct)
+class orderd(admin.ModelAdmin):
+    list_display = [
+        'user', 'product', 'order_id', 'amount'
+    ]
 
 

@@ -22,13 +22,14 @@ from django.contrib.auth import views as auth_views
 from django.core.mail import EmailMultiAlternatives
 from django.utils.html import strip_tags
 from django.template.loader import render_to_string
-
+from farm.forms import password_reset_form
 
 urlpatterns = [
     path('mysite/admin', admin.site.urls),
 path('password-reset/',
          auth_views.PasswordResetView.as_view(subject_template_name='subject.txt',
-                                              email_template_name='password_reset_email.txt'),
+                                              html_email_template_name='password_reset_email.html',
+                                              template_name= 'login_singup.html'),
          name='password_reset'),
     path('password-reset/done/',
          auth_views.PasswordResetDoneView.as_view(template_name='reset_email_confirmation.html'),

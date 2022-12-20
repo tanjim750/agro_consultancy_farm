@@ -290,7 +290,17 @@ class profile(models.Model):
 	def __repr__(self) -> str:
 		return f'{self.name} {self.number}'
 
+class orderedProduct(models.Model):
+	user = models.ForeignKey(User, on_delete=models.CASCADE)
+	product = models.ForeignKey(addproducts, on_delete=models.CASCADE)
+	ordered_date = models.DateTimeField(auto_now_add=True)
+	amount = models.CharField(max_length=9000000)
+	items = models.IntegerField()
+	qty = models.IntegerField(default=1)
+	order_id = models.CharField(editable=False, max_length=100)
 
+	def __repr__(self) -> str:
+		return f'{self.user} {self.product}'
 
 
 

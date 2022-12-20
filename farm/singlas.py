@@ -1,6 +1,6 @@
 from django.db.models.signals import post_save
 from django.db.models.signals import pre_save
-from .models import profile
+from .models import profile , post_comments , comments_reply
 from django.contrib.auth.models import User
 from django.conf import settings
 from django.core.mail import send_mail
@@ -33,8 +33,22 @@ def create_profile(sender, instance  , created , **kwargs):
         email.attach_alternative(html_template, 'text/html')
         email.send()
 
+def update_comment(sender, instance, created, **kwargs):
+    if not created:
+        post_cmnt = post_comments.objects.filter(name= instance.user)
+        reply_of_cmnt = comments_reply.objects.filter(name = instance.user)
+
+        for cmnt in post_cmnt:
+            cmnt.number = instance.number
+            cmnt.save()
+        for reply in reply_of_cmnt:
+            reply.number = instance.number
+            reply.save()
+
+
 
 post_save.connect(create_profile, sender=User)
+post_save.connect(update_comment, sender=profile)
 
 
 
