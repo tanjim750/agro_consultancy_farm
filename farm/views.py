@@ -176,6 +176,19 @@ def order_product(request, pd_id, amount, quantity):
         print(address)
     return redirect('/')
 
+@login_required()
+def myOrders(request):
+    footer = home.objects.get(id=1)
+    myproducts = orderedProduct.objects.filter(user= request.user).order_by('-ordered_date')
+    feature = features.objects.get(id=1)
+    info = ''
+    if request.user.is_authenticated:
+        info = profile.objects.get(user=request.user)
+
+
+    context = {'footer': footer, "myproducts": myproducts, 'feature': feature, 'info': info}
+    return render(request, 'myorders.html', context)
+
 def contact(request):
     footer = home.objects.get(id=1)
     condt = contact_page.objects.get(id= 1)

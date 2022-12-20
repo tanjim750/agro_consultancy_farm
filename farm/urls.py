@@ -14,6 +14,7 @@ urlpatterns = [
     path('product/details/<id>/<value>' , views.viewproduct),
     path('shopping/product=<id>' , views.shopping),
     path('confirm/shopping/<pd_id>/<amount>/<quantity>/' , views.order_product),
+    path('account/orders/' , views.myOrders),
     path('blog-post/<id>/<value>' , views.viewblogposts),
     path('comments/<id>' , views.displayComments),
     path('comment-replay' , views.comment_replay),

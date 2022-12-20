@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+
+{% block style %}
+#team, #blg{
+display:none;
+}
+{% endblock %}
+
+{% block body %}
+
+{% for product in myproducts %}
+  <div class="card" style=" margin:20px; border-radius:15px; background:#ebeef2;">
+  <div class="card-body">
+    <h5 class="card-title"></h5>
+    <h6 class="card-subtitle mb-2 text-muted">Order Id: {{product.order_id}}</h6>
+    <p class="card-text">
+      <img src="{{product.product.thumbnail.url}}" style="height:50px; width:50px;">
+      <span> &nbsp;&nbsp;&nbsp;{{product.product.name}}</span>
+
+    </p>
+    <p><span style="color:green;">Status: {{product.status}} </span><span class="btn btn-primary" style="float:right; border-radius:5px;">Trace Product</span></p>
+
+  </div>
+
+</div>
+
+{% endfor %}
+
+{% endblock %}
+

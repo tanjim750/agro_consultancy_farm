@@ -298,6 +298,7 @@ class orderedProduct(models.Model):
 	items = models.IntegerField()
 	qty = models.IntegerField(default=1)
 	order_id = models.CharField(editable=False, max_length=100)
+	status = models.CharField(max_length=100, default='Received')
 
 	def __repr__(self) -> str:
 		return f'{self.user} {self.product}'
