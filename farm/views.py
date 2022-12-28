@@ -692,7 +692,8 @@ def account_setting(request):
               'len_error':len_error , 'type':type, 'email_error':email_error, 'name_error':name_error}
     return render(request, 'profile_info.html', cotext)
 
-
+def itsfortest(request):
+    print('done')
 
 
 
